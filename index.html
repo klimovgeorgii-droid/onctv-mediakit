@@ -1,0 +1,1539 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>onCTV by Adspector — реклама на Smart TV</title>
+<meta name="description" content="onCTV — реклама на главном экране дома: в интерфейсе операционной системы Smart TV и внутри стриминговых приложений. Форматы, охват, верификация и коммерческая выгода для агентств и брендов.">
+<link rel="icon" type="image/svg+xml" href="assets/mark-pink.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+/* ============ tokens ============ */
+:root{
+  --pink:#F88CFF;
+  --indigo:#818DFF;
+  --violet:#918ECD;
+  --navy:#323B4F;
+  --navy-deep:#232A3A;
+  --navy-deepest:#181D28;
+  --slate:#565D6B;
+  --lav-l:#C0C4DE;
+  --lav-xl:#DFE3F9;
+  --paper:#FFFFFF;
+  --paper-soft:#F5F6FC;
+  --ink:#262E40;
+
+  --grad-signal: linear-gradient(120deg, var(--pink), var(--indigo));
+  --grad-signal-soft: linear-gradient(120deg, rgba(248,140,255,.16), rgba(129,141,255,.16));
+
+  --display: 'Unbounded', sans-serif;
+  --text: 'Inter', sans-serif;
+
+  --maxw: 1240px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-card: 22px;
+  --r-lg: 28px;
+  --r-btn: 9999px;
+
+  /* spacing scale — base unit 8px; nothing below is sized ad hoc */
+  --sp-1:4px;
+  --sp-2:8px;
+  --sp-3:12px;
+  --sp-4:16px;
+  --sp-5:24px;
+  --sp-6:32px;
+  --sp-7:48px;
+  --sp-8:80px;
+
+  /* type scale — fixed steps; nothing below is sized ad hoc */
+  --fs-2xs:.75rem;
+  --fs-xs:.8125rem;
+  --fs-sm:.875rem;
+  --fs-base:1rem;
+  --fs-md:1.125rem;
+  --fs-lg:1.25rem;
+  --fs-xl:1.5rem;
+  --fs-2xl:1.875rem;
+
+  /* motion: critically-damped settle vs. a soft spring with slight carry for interaction */
+  --ease: cubic-bezier(.16,.8,.24,1);
+  --ease-spring-soft: cubic-bezier(.33,1.15,.62,1);
+
+  /* materials */
+  --glass-bg: rgba(24,29,40,.55);
+  --glass-border: rgba(255,255,255,.14);
+  --shadow-glass: 0 1px 1px rgba(0,0,0,.2), 0 10px 26px -14px rgba(0,0,0,.5), 0 26px 60px -28px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--text);
+  font-size:1rem;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{
+  font-family:var(--display);
+  margin:0;
+  line-height:1.02;
+  letter-spacing:-.02em;
+  font-weight:800;
+}
+p{margin:0;}
+a{color:inherit; text-decoration:none;}
+ul{margin:0; padding:0; list-style:none;}
+img,svg{display:block; max-width:100%;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(20px,5vw,64px); position:relative; z-index:1;}
+:focus-visible{outline:2.5px solid var(--pink); outline-offset:3px; border-radius:4px;}
+
+/* ============ type utilities ============ */
+.eyebrow{
+  display:flex; align-items:center; gap:.6em;
+  font-family:var(--text);
+  font-weight:700;
+  font-size:var(--fs-2xs);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--pink);
+}
+.eyebrow .mark-dot{width:14px; height:12px; flex:none;}
+
+.lead{
+  font-family:var(--text);
+  font-weight:300;
+  font-size:clamp(1.05rem,1.6vw,1.32rem);
+  line-height:1.5;
+  max-width:46em;
+  color:var(--lav-l);
+}
+
+.section-head{ margin-bottom:clamp(36px,5vw,56px); }
+.section-head h2{ font-size:clamp(1.8rem,3.6vw,2.7rem); margin:.5em 0 .4em; max-width:16em; color:#F6F7FC; }
+
+/* ============ layout ============ */
+.section{ position:relative; padding:clamp(var(--sp-7),10vw,var(--sp-8)) 0; overflow:hidden; }
+.section--dark{ background:var(--navy); }
+.section--darker{ background:var(--navy-deep); }
+
+.grain{ position:absolute; inset:0; opacity:.5; mix-blend-mode:overlay; pointer-events:none; z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+/* ============ section glow accents ============ */
+.glow{ position:absolute; border-radius:50%; pointer-events:none; filter:blur(80px); z-index:0; mix-blend-mode:screen; }
+
+/* ============ reveal ============ */
+.reveal{ opacity:0; transform:translateY(22px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+.reveal.in{ opacity:1; transform:none; }
+.reveal-stagger > *{ opacity:0; transform:translateY(18px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal-stagger.in > *{ opacity:1; transform:none; }
+.reveal-stagger.in > *:nth-child(1){transition-delay:.02s;}
+.reveal-stagger.in > *:nth-child(2){transition-delay:.09s;}
+.reveal-stagger.in > *:nth-child(3){transition-delay:.16s;}
+.reveal-stagger.in > *:nth-child(4){transition-delay:.23s;}
+.reveal-stagger.in > *:nth-child(5){transition-delay:.30s;}
+
+/* ============ buttons ============ */
+.btn{
+  display:inline-flex; align-items:center; gap:.6em;
+  font-family:var(--text); font-weight:600; font-size:var(--fs-base);
+  padding:.95em 1.7em; border-radius:var(--r-btn);
+  border:1.5px solid transparent;
+  cursor:pointer; transition:transform .5s var(--ease-spring-soft), box-shadow .5s var(--ease-spring-soft), border-color .3s ease, background .3s ease;
+  white-space:nowrap;
+}
+.btn-primary{ background:var(--grad-signal); color:#1c1330; box-shadow:0 1px 1px rgba(28,19,48,.12), 0 14px 30px -12px rgba(248,140,255,.45); }
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 1px 1px rgba(28,19,48,.16), 0 20px 40px -14px rgba(248,140,255,.55); }
+.btn-ghost{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.22); color:#fff; }
+.btn-ghost:hover{ border-color:rgba(255,255,255,.4); background:rgba(255,255,255,.1); }
+.btn:active{ transform:scale(.95); }
+.btn-arrow{ transition:transform .35s var(--ease-spring-soft); }
+.btn:hover .btn-arrow{ transform:translateX(3px); }
+
+/* ============ chapter mark ============ */
+.chapter-mark{
+  display:flex; align-items:baseline; gap:.7em; margin-bottom:1.1em;
+  color:var(--pink);
+}
+.chapter-mark .num{ font-family:var(--display); font-weight:700; font-size:var(--fs-sm); letter-spacing:.02em; }
+.chapter-mark .divider{ width:34px; height:1.5px; background:currentColor; opacity:.35; }
+
+/* ============ header ============ */
+.site-header{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:18px 0;
+  transition:background .5s var(--ease), padding .5s var(--ease), border-color .5s var(--ease), backdrop-filter .5s var(--ease);
+  border-bottom:1px solid transparent;
+}
+.site-header.scrolled{
+  background:rgba(20,24,34,.6);
+  backdrop-filter:blur(20px) saturate(1.6);
+  border-color:rgba(255,255,255,.08);
+  padding:12px 0;
+}
+.header-row{ display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.brand{ display:flex; align-items:center; gap:.6em; }
+.brand .mark{ width:26px; height:22px; }
+.brand-word{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:var(--fs-md); color:#fff; }
+.brand-word span{ color:var(--pink); }
+nav.primary-nav{ display:flex; align-items:center; gap:clamp(10px,1.6vw,22px); }
+nav.primary-nav a{
+  font-size:var(--fs-xs); font-weight:600; color:rgba(255,255,255,.72);
+  white-space:nowrap;
+  transition:color .3s ease;
+}
+nav.primary-nav a:hover{ color:#fff; }
+.header-cta{ display:flex; align-items:center; gap:14px; }
+.header-cta .btn{ padding:.72em 1.35em; font-size:var(--fs-sm); }
+.nav-toggle{ display:none; }
+
+/* ============ hero ============ */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex; align-items:center;
+  padding-top:140px; padding-bottom:90px;
+  background:radial-gradient(120% 90% at 78% 8%, #3c4560 0%, var(--navy) 46%, var(--navy-deep) 100%);
+  overflow:hidden;
+}
+.eclipse{ position:absolute; pointer-events:none; }
+.hero .eclipse{
+  right:-14%; top:8%;
+  width:min(62vw,900px); height:min(62vw,900px);
+}
+.contact-section .eclipse{
+  left:50%; top:-22%; transform:translateX(-50%);
+  width:min(50vw,760px); height:min(50vw,760px);
+  opacity:.4;
+}
+.eclipse .c1, .eclipse .c2{
+  position:absolute; border-radius:50%; mix-blend-mode:screen; filter:blur(2px);
+}
+.eclipse .c1{
+  left:0; top:12%; width:70%; height:70%;
+  background:radial-gradient(circle at 38% 35%, var(--pink) 0%, rgba(248,140,255,.55) 42%, rgba(248,140,255,0) 72%);
+  animation:driftA 22s ease-in-out infinite;
+}
+.eclipse .c2{
+  right:0; top:0; width:70%; height:70%;
+  background:radial-gradient(circle at 62% 40%, var(--indigo) 0%, rgba(129,141,255,.55) 42%, rgba(129,141,255,0) 72%);
+  animation:driftB 22s ease-in-out infinite;
+}
+@keyframes driftA{ 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(3%,-4%) scale(1.05);} }
+@keyframes driftB{ 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(-4%,3%) scale(1.04);} }
+
+.hero-inner{ position:relative; z-index:2; max-width:760px; }
+.hero .eyebrow{ color:var(--pink); margin-bottom:1.4em; }
+.hero h1{
+  font-size:clamp(3.4rem,9vw,6.4rem);
+  color:#fff;
+  display:flex; align-items:center; gap:.05em;
+}
+.hero h1 .mark{ width:.72em; height:.6em; margin-right:.02em; }
+.hero .byline{
+  font-family:var(--text); font-weight:500; font-size:clamp(1.05rem,2vw,1.4rem);
+  color:var(--lav-l); margin-top:.5em; letter-spacing:.01em;
+}
+.hero .byline b{ color:var(--pink); font-weight:600; }
+.hero .headline{
+  font-family:var(--display); font-weight:700; letter-spacing:-.02em;
+  font-size:clamp(1.5rem,3vw,2.1rem);
+  color:#fff; line-height:1.28; margin:.9em 0 .55em; max-width:15.5em;
+}
+.hero .headline .accent{
+  background:var(--grad-signal); -webkit-background-clip:text; background-clip:text; color:transparent;
+  font-style:italic;
+}
+.hero .sub{ color:var(--lav-l); font-weight:300; font-size:clamp(1rem,1.4vw,1.15rem); max-width:34em; margin-bottom:2.1em; }
+.hero .sub b{ color:#fff; font-weight:700; }
+.hero .cta-row{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:2.8em; }
+
+/* ============ hero apple-style stat ============ */
+.hero-stat{
+  display:flex; flex-direction:column; align-items:flex-start; gap:.15em;
+  padding-top:1.9em; border-top:1px solid rgba(255,255,255,.14);
+}
+.hero-stat-num{
+  font-family:var(--display); font-weight:900; font-variant-numeric:tabular-nums; letter-spacing:-.02em;
+  font-size:clamp(3.4rem,8vw,6rem); line-height:1;
+  background:linear-gradient(120deg, #fff 30%, var(--lav-l));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero-stat-label{ font-size:var(--fs-md); font-weight:400; color:var(--lav-l); margin-top:.3em; }
+.hero-stat-label b{ color:var(--pink); font-weight:700; }
+.hero-stat-source{ font-size:var(--fs-2xs); color:var(--lav-l); opacity:.55; margin-top:.7em; max-width:32em; }
+
+.scroll-cue{
+  position:absolute; left:50%; bottom:28px; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  color:rgba(255,255,255,.5); font-size:var(--fs-2xs); letter-spacing:.14em; text-transform:uppercase;
+  z-index:2;
+}
+.scroll-cue .line{ width:1px; height:34px; background:linear-gradient(var(--pink), transparent); animation:scrollcue 2.2s ease-in-out infinite; }
+@keyframes scrollcue{ 0%{ opacity:0; transform:scaleY(.3); transform-origin:top;} 40%{opacity:1; transform:scaleY(1); transform-origin:top;} 100%{opacity:0; transform:scaleY(1); transform-origin:bottom;} }
+
+/* ============ growth panel (01) ============ */
+.growth-panel{
+  background:var(--lav-xl); border-radius:var(--r-lg); padding:clamp(28px,4vw,48px);
+  margin-bottom:clamp(28px,4vw,44px);
+}
+.growth-eyebrow{ display:block; font-size:var(--fs-2xs); font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--violet); margin-bottom:.5em; }
+.growth-head h3{ font-family:var(--display); font-weight:700; font-size:clamp(1.2rem,2vw,1.5rem); color:var(--navy); max-width:18em; }
+.growth-body{ display:flex; gap:clamp(28px,4vw,56px); align-items:center; margin-top:clamp(24px,3vw,36px); flex-wrap:wrap; }
+.growth-bars{ flex:1 1 380px; display:flex; flex-direction:column; gap:18px; min-width:280px; }
+.growth-bar-row{ display:flex; align-items:center; gap:14px; }
+.growth-bar-year{ flex:none; width:3.2em; font-family:var(--display); font-weight:700; font-size:var(--fs-sm); color:var(--slate); letter-spacing:-.01em; }
+.growth-bar-track{ flex:1; height:34px; border-radius:17px; background:rgba(50,59,79,.08); overflow:hidden; }
+.growth-bar-fill{ height:100%; width:100%; border-radius:17px; transform:scaleX(0); transform-origin:left; transition:transform 1.3s var(--ease); will-change:transform; }
+.growth-bar-fill--prev{ background:var(--lav-l); }
+.growth-bar-fill--curr{ background:var(--grad-signal); }
+.in .growth-bar-fill{ transform:scaleX(var(--target)); }
+.growth-bar-num{ flex:none; width:5em; text-align:right; font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:var(--fs-base); color:var(--navy); font-variant-numeric:tabular-nums; }
+.growth-delta{ flex:none; display:flex; flex-direction:column; gap:.3em; padding-left:clamp(20px,3vw,40px); border-left:1px solid rgba(50,59,79,.14); }
+.growth-delta-num{ font-family:var(--display); font-weight:900; letter-spacing:-.02em; font-size:clamp(2.2rem,3.6vw,3rem); color:var(--navy); font-variant-numeric:tabular-nums; line-height:1; }
+.growth-delta-cap{ font-size:var(--fs-sm); color:var(--slate); max-width:14em; margin-top:.3em; }
+.growth-delta-cap b{ color:var(--navy); }
+.growth-source{ font-size:var(--fs-2xs); color:var(--slate); opacity:.75; margin-top:clamp(20px,3vw,32px); }
+
+/* ============ stat rail (01) ============ */
+.stat-rail{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5); margin-bottom:clamp(44px,6vw,68px); }
+.stat-card{
+  background:var(--lav-xl); border-radius:var(--r-card); padding:var(--sp-5);
+  border:1px solid rgba(50,59,79,.05);
+}
+.stat-card .num{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:clamp(1.6rem,2.6vw,2.1rem); color:var(--navy); display:block; margin-bottom:.32em; }
+.stat-card .cap{ font-size:var(--fs-sm); color:var(--slate); line-height:1.5; }
+
+.chart-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(28px,4vw,56px); align-items:start; }
+.chart-panel h3{ font-family:var(--text); font-weight:700; font-size:var(--fs-base); color:#fff; margin-bottom:1.4em; }
+
+.bars{ display:flex; gap:clamp(24px,4vw,56px); align-items:flex-end; height:190px; margin-bottom:1em; }
+.bar-group{ display:flex; flex-direction:column; align-items:center; gap:10px; flex:1; }
+.bar-group .pair{ display:flex; gap:10px; align-items:flex-end; height:150px; }
+.bar-group .stick{ width:34px; border-radius:8px 8px 3px 3px; position:relative; transform:scaleY(0); transform-origin:bottom; transition:transform 1s var(--ease); }
+.in .bar-group .stick{ transform:scaleY(1); }
+.bar-group .stick.tv{ background:var(--lav-l); }
+.bar-group .stick.ctv{ background:linear-gradient(180deg, var(--pink), var(--indigo)); }
+.bar-group .stick .val{ position:absolute; top:-24px; left:50%; transform:translateX(-50%); font-size:var(--fs-2xs); font-weight:700; color:#fff; white-space:nowrap; }
+.bar-group .cat{ font-size:var(--fs-xs); color:var(--lav-l); text-align:center; }
+.legend{ display:flex; gap:18px; font-size:var(--fs-sm); color:var(--lav-l); }
+.legend span{ display:inline-flex; align-items:center; gap:.5em; }
+.legend i{ width:10px; height:10px; border-radius:3px; }
+.legend .tv i{ background:var(--lav-l); }
+.legend .ctv i{ background:linear-gradient(120deg, var(--pink), var(--indigo)); }
+.chart-note{ font-size:var(--fs-sm); color:var(--lav-l); margin-top:1.1em; }
+
+.donut-wrap{ display:flex; flex-direction:column; align-items:center; gap:1.4em; }
+.donut{
+  width:200px; height:200px; border-radius:50%;
+  background:conic-gradient(var(--navy) 0 64%, var(--indigo) 64% 88%, var(--pink) 88% 100%);
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+  transform:scale(.6); opacity:0; transition:transform 1s var(--ease), opacity 1s var(--ease);
+}
+.in .donut{ transform:scale(1); opacity:1; }
+.donut::after{ content:""; position:absolute; inset:24%; background:var(--paper); border-radius:50%; }
+.donut .center{ position:relative; z-index:1; text-align:center; font-family:var(--display); font-weight:800; letter-spacing:-.02em; color:var(--navy); font-size:var(--fs-xl); }
+.donut-legend{ display:grid; gap:.6em; width:100%; max-width:260px; }
+.donut-legend li{ display:flex; align-items:center; gap:.7em; font-size:var(--fs-sm); color:var(--lav-l); }
+.donut-legend i{ width:11px; height:11px; border-radius:3px; flex:none; }
+.donut-legend b{ color:#fff; min-width:2.6em; }
+.source-line{ font-size:var(--fs-2xs); color:var(--lav-l); opacity:.7; margin-top:2.4em; }
+
+/* ============ CJM (01A) ============ */
+.clock-layout{ display:grid; grid-template-columns:auto 1fr; gap:clamp(40px,6vw,80px); align-items:center; }
+.clock-stage{ display:flex; justify-content:center; }
+.clock-ring{
+  position:relative; width:300px; height:300px; flex:none; border-radius:50%;
+  background:conic-gradient(from 0deg,
+    var(--pink) 0deg 60deg,
+    var(--lav-l) 60deg 180deg,
+    var(--violet) 180deg 210deg,
+    var(--indigo) 210deg 270deg,
+    var(--slate) 270deg 360deg);
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.5);
+}
+.clock-hand{
+  position:absolute; left:50%; top:50%; width:3px; height:145px;
+  background:linear-gradient(to top, rgba(255,255,255,0), #fff 65%);
+  transform-origin:50% 100%;
+  transform:translate(-50%,-100%) rotate(30deg);
+  transition:transform 1s var(--ease-spring-soft);
+  border-radius:2px; pointer-events:none; z-index:2;
+}
+.clock-hand::before{ content:""; position:absolute; top:-5px; left:50%; transform:translate(-50%,0); width:10px; height:10px; border-radius:50%; background:#fff; box-shadow:0 0 16px 3px rgba(255,255,255,.75); }
+.clock-ring-inner{
+  position:absolute; inset:30px; border-radius:50%; background:var(--navy-deep);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.4em; text-align:center; padding:0 20px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+}
+.clock-active-range{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:var(--fs-xl); color:#fff; }
+.clock-active-name{ font-size:var(--fs-sm); color:var(--lav-l); }
+.clock-tabs{ display:flex; flex-direction:column; gap:4px; }
+.clock-tab{
+  display:flex; align-items:center; gap:.9em; width:100%; text-align:left;
+  background:transparent; border:none; border-radius:var(--r-sm); padding:.75em .9em;
+  font-family:var(--text); cursor:pointer; color:var(--lav-l);
+  transition:background .3s ease, color .3s ease;
+}
+.clock-tab:hover{ background:rgba(255,255,255,.05); }
+.clock-tab.is-active{ background:rgba(255,255,255,.09); color:#fff; }
+.clock-tab .dot{ width:10px; height:10px; border-radius:50%; flex:none; }
+.clock-tab .range{ font-family:var(--display); font-weight:700; letter-spacing:-.01em; font-size:var(--fs-sm); flex:none; width:8.8em; white-space:nowrap; }
+.clock-tab .name{ font-size:var(--fs-sm); }
+.clock-detail{ margin-top:1.5em; padding-top:1.5em; border-top:1px solid rgba(255,255,255,.1); transition:opacity .25s ease; }
+.clock-detail.is-fading{ opacity:0; }
+.clock-detail-desc{ color:#fff; font-size:var(--fs-md); line-height:1.5; margin-bottom:.7em; }
+.clock-detail-content{ color:var(--lav-l); font-size:var(--fs-base); line-height:1.55; }
+.clock-detail-content b{ color:#fff; }
+
+/* ============ mix (02) ============ */
+.mix-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--sp-5); }
+.mix-card{ border-radius:var(--r-card); padding:2em 1.8em; }
+.mix-card.is-dark{ background:var(--navy-deepest); border:1px solid rgba(255,255,255,.08); }
+.mix-card.is-soft{ background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.09); }
+.mix-card .big{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:clamp(1.7rem,2.6vw,2.3rem); line-height:1.15; color:#fff; margin:.4em 0 .3em; }
+.mix-card.is-dark .big{ font-size:clamp(2.1rem,3.2vw,2.7rem); }
+.mix-card .tag{ font-size:var(--fs-sm); color:var(--lav-l); }
+.mix-card .body{ font-size:var(--fs-base); font-weight:400; color:var(--lav-l); line-height:1.55; margin-top:.9em; }
+.mix-card .body + .body{ margin-top:1.3em; padding-top:1.1em; border-top:1px solid rgba(255,255,255,.1); }
+.mix-card .quote{ font-size:var(--fs-md); color:#fff; line-height:1.55; margin-top:1em; }
+.mix-card .src{ font-size:var(--fs-2xs); color:var(--lav-l); opacity:.65; margin-top:1em; }
+
+/* ============ use cases (02A) ============ */
+.uc-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-5); }
+.uc-card{ background:var(--lav-xl); border-radius:var(--r-card); padding:var(--sp-5); display:flex; gap:1.4em; }
+.uc-num{
+  flex:none; width:52px; height:52px; border-radius:50%;
+  background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-weight:700; font-size:var(--fs-base);
+}
+.uc-card h4{ font-family:var(--text); font-weight:700; font-size:var(--fs-md); color:var(--navy); margin-bottom:.3em; }
+.uc-card .metric{ font-family:var(--display); font-weight:700; letter-spacing:-.02em; font-size:var(--fs-base); color:var(--navy); margin-bottom:.55em; display:block; }
+.uc-card p{ font-size:var(--fs-base); color:var(--slate); line-height:1.55; }
+
+/* ============ formats (03) ============ */
+.fmt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-5); }
+.fmt-card{
+  background:var(--paper); border:1px solid rgba(50,59,79,.09); border-radius:var(--r-lg); padding:2.2em;
+  display:flex; flex-direction:column; gap:1.4em; cursor:pointer;
+  transition:transform .5s var(--ease-spring-soft), box-shadow .5s var(--ease-spring-soft), border-color .3s ease;
+}
+.fmt-card:hover, .fmt-card:focus-visible{
+  transform:translateY(-6px);
+  box-shadow:0 1px 1px rgba(20,24,34,.06), 0 32px 56px -24px rgba(20,24,34,.4);
+  border-color:rgba(129,141,255,.35);
+}
+.fmt-card:hover .device-frame, .fmt-card:focus-visible .device-frame{ transform:scale(1.015); }
+.fmt-card:active{ transform:scale(.98); }
+.fmt-head h3{ font-family:var(--display); font-weight:700; font-size:var(--fs-xl); color:var(--navy); }
+.fmt-head .sub{ font-size:var(--fs-sm); color:var(--violet); font-weight:600; margin-top:.4em; }
+.fmt-open-hint{
+  display:inline-flex; align-items:center; gap:.5em; align-self:flex-start;
+  font-size:var(--fs-sm); font-weight:700; color:var(--indigo);
+}
+.fmt-open-hint svg{ transition:transform .35s var(--ease-spring-soft); }
+.fmt-card:hover .fmt-open-hint svg, .fmt-card:focus-visible .fmt-open-hint svg{ transform:translateX(3px); }
+
+.device-frame{
+  border-radius:var(--r-md); background:var(--navy); padding:10px;
+  box-shadow:0 20px 44px -18px rgba(35,42,58,.4);
+  transition:transform .5s var(--ease-spring-soft);
+}
+.device-frame .screen{
+  aspect-ratio:16/9; border-radius:8px; position:relative; overflow:hidden;
+  background:
+    radial-gradient(120% 140% at 15% 0%, rgba(248,140,255,.5), transparent 55%),
+    radial-gradient(120% 140% at 100% 100%, rgba(129,141,255,.55), transparent 55%),
+    var(--navy-deep);
+  display:flex; align-items:center; justify-content:center;
+}
+.device-frame .screen .ph{
+  display:flex; flex-direction:column; align-items:center; gap:.6em;
+  color:rgba(255,255,255,.55); text-align:center; padding:1em;
+}
+.device-frame .screen .ph svg{ width:34px; height:34px; opacity:.8; }
+.device-frame .screen .ph span{ font-size:var(--fs-2xs); letter-spacing:.06em; text-transform:uppercase; font-weight:600; }
+/* placeholder — user will later swap this .screen fill for a real <img> of the actual UI */
+
+.fmt-desc{ font-size:var(--fs-base); color:var(--slate); line-height:1.55; margin-top:-.4em; }
+.fmt-list{ display:flex; flex-wrap:wrap; gap:8px; }
+.fmt-list li{ font-size:var(--fs-2xs); color:var(--navy); background:var(--lav-xl); border-radius:999px; padding:.5em 1em; }
+.fmt-group-label{ display:block; font-size:var(--fs-2xs); font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--violet); margin-bottom:.6em; }
+.fmt-partners{ display:flex; flex-direction:column; gap:1.2em; }
+.fmt-logos{ display:flex; flex-wrap:wrap; align-items:center; gap:22px; }
+.fmt-logo{ height:26px; width:auto; max-width:100px; object-fit:contain; }
+.fmt-groups{ display:flex; flex-wrap:wrap; gap:1.6em; }
+.fmt-group{ flex:1 1 160px; }
+.fmt-group .fmt-list{ margin-top:0; }
+.fmt-meta{ font-size:var(--fs-sm); color:var(--slate); line-height:1.6; }
+.fmt-meta b{ color:var(--navy); }
+.fmt-note{ font-size:var(--fs-sm); color:var(--slate); font-style:italic; line-height:1.5; }
+.fmt-cap{ margin-top:auto; background:var(--navy); color:#fff; border-radius:var(--r-sm); padding:1em 1.2em; font-size:var(--fs-base); font-weight:600; }
+
+/* ============ TV overlay (formats zoom) ============ */
+.tv-overlay{ position:fixed; inset:0; z-index:200; visibility:hidden; pointer-events:none; }
+.tv-overlay.open{ visibility:visible; pointer-events:auto; }
+.tv-overlay-backdrop{
+  position:absolute; inset:0; background:rgba(10,12,18,.7); backdrop-filter:blur(20px);
+  opacity:0; transition:opacity .6s var(--ease-spring-soft);
+}
+.tv-overlay.open .tv-overlay-backdrop{ opacity:1; }
+.tv-overlay-screen{
+  position:fixed; background:var(--glass-bg); backdrop-filter:blur(28px); border:1px solid var(--glass-border); border-radius:20px;
+  box-shadow:var(--shadow-glass);
+  overflow:hidden;
+}
+/* scroll lives on a plain (non-blurred) inner layer — backdrop-filter + internal
+   overflow-scroll on the same position:fixed element fails to repaint in Safari */
+.tv-overlay-scroll{
+  position:absolute; inset:0; overflow-y:auto; overscroll-behavior:contain;
+  padding:clamp(24px,4vw,52px);
+  -webkit-overflow-scrolling:touch;
+}
+.tv-overlay-head, .tv-overlay-grid{ opacity:0; transition:opacity .4s var(--ease-spring-soft); }
+.tv-overlay-screen.content-in .tv-overlay-head, .tv-overlay-screen.content-in .tv-overlay-grid{ opacity:1; }
+.tv-overlay-close{
+  position:absolute; top:18px; right:18px; width:38px; height:38px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.05); color:#fff;
+  font-size:1.3rem; line-height:1; cursor:pointer; transition:border-color .25s ease, color .25s ease, transform .3s var(--ease-spring-soft);
+  z-index:1;
+}
+.tv-overlay-close:hover{ border-color:var(--pink); color:var(--pink); }
+.tv-overlay-close:active{ transform:scale(.9); }
+.tv-overlay-eyebrow{
+  display:block; font-family:var(--text); font-weight:700; font-size:var(--fs-2xs);
+  letter-spacing:.14em; text-transform:uppercase; color:var(--pink); margin-bottom:.6em;
+}
+.tv-overlay-head h3{ font-family:var(--display); font-weight:700; font-size:clamp(1.4rem,2.6vw,2rem); color:#fff; max-width:20em; }
+.tv-overlay-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px;
+  margin-top:1.8em;
+}
+.tv-format-tile{ display:flex; flex-direction:column; gap:.7em; }
+.tv-format-tile .shot{
+  aspect-ratio:16/9; border-radius:12px; position:relative; overflow:hidden;
+  background:
+    radial-gradient(120% 140% at 15% 0%, rgba(248,140,255,.45), transparent 55%),
+    radial-gradient(120% 140% at 100% 100%, rgba(129,141,255,.5), transparent 55%),
+    var(--navy);
+  display:flex; align-items:center; justify-content:center;
+}
+/* placeholder — swap .shot background for a real <img> per tile when screenshots are ready */
+.tv-format-tile .shot span{
+  font-size:var(--fs-2xs); letter-spacing:.05em; text-transform:uppercase; font-weight:600;
+  color:rgba(255,255,255,.55); text-align:center; padding:0 1em;
+}
+.tv-format-tile .label{ font-size:var(--fs-sm); font-weight:600; color:var(--lav-l); }
+
+.tv-overlay-grid.is-doc{ display:flex; flex-direction:column; gap:clamp(28px,4vw,44px); }
+.tv-vendor{ display:flex; flex-direction:column; gap:1.1em; }
+.tv-vendor + .tv-vendor{ padding-top:clamp(28px,4vw,44px); border-top:1px solid rgba(255,255,255,.1); }
+.tv-vendor-head{ display:flex; gap:1.1em; align-items:flex-start; }
+.tv-vendor-logo-chip{
+  flex:none; width:76px; height:48px; border-radius:var(--r-sm); background:#fff;
+  display:flex; align-items:center; justify-content:center; padding:8px;
+}
+.tv-vendor-logo-chip img{ max-width:100%; max-height:100%; object-fit:contain; }
+.tv-vendor-intro{ font-size:var(--fs-sm); color:var(--lav-l); line-height:1.5; padding-top:.3em; }
+.tv-vendor-intro b{ color:#fff; }
+.tv-format-list{ display:flex; flex-direction:column; gap:10px; }
+.tv-format-row{ background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:var(--r-md); overflow:hidden; transition:border-color .3s ease; }
+.tv-format-row.is-open{ border-color:rgba(255,255,255,.16); }
+.tv-format-toggle{
+  display:flex; align-items:center; justify-content:space-between; gap:1em; width:100%;
+  background:none; border:none; padding:1.1em 1.4em; margin:0; cursor:pointer; text-align:left;
+  color:inherit; font:inherit;
+}
+.tv-format-toggle h4{ font-family:var(--display); font-weight:700; font-size:var(--fs-base); color:#fff; }
+.tv-format-chevron{ flex:none; color:var(--lav-l); transition:transform .4s var(--ease-spring-soft); }
+.tv-format-row.is-open .tv-format-chevron{ transform:rotate(180deg); color:#fff; }
+.tv-format-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .45s var(--ease-spring-soft); }
+.tv-format-row.is-open .tv-format-body{ grid-template-rows:1fr; }
+.tv-format-body-inner{ overflow:hidden; }
+.tv-format-desc{ font-size:var(--fs-sm); color:var(--lav-l); line-height:1.5; padding:0 1.4em; margin-bottom:1em; }
+.tv-format-shot{ margin:0 1.4em 1.2em; border-radius:var(--r-sm); overflow:hidden; aspect-ratio:16/9; }
+.tv-format-shot-img{ width:100%; height:100%; object-fit:cover; display:block; }
+.tv-format-shot-ph{
+  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+  background:
+    radial-gradient(120% 140% at 15% 0%, rgba(248,140,255,.35), transparent 55%),
+    radial-gradient(120% 140% at 100% 100%, rgba(129,141,255,.4), transparent 55%),
+    var(--navy);
+}
+.tv-format-shot-ph span{ font-size:var(--fs-2xs); letter-spacing:.05em; text-transform:uppercase; font-weight:600; color:rgba(255,255,255,.55); text-align:center; padding:0 1em; }
+.tv-format-meta{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:0 1.4em 1.3em; }
+.tv-format-meta div{ display:flex; flex-direction:column; gap:.35em; }
+.tv-format-meta span{ font-size:var(--fs-2xs); font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--violet); }
+.tv-format-meta b{ font-size:var(--fs-xs); font-weight:500; color:var(--lav-l); line-height:1.4; }
+.tv-format-click-list{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:.3em; }
+.tv-format-click-list li{ font-size:var(--fs-xs); color:var(--lav-l); line-height:1.4; padding-left:.85em; position:relative; }
+.tv-format-click-list li::before{ content:"–"; position:absolute; left:0; color:var(--violet); }
+
+/* ============ verification (04) ============ */
+.verify-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-5); margin-bottom:clamp(28px,4vw,44px); }
+.verify-card{ background:var(--lav-xl); border-radius:var(--r-card); padding:var(--sp-5); }
+.verify-card .icon{ width:42px; height:42px; border-radius:var(--r-sm); background:var(--navy); display:flex; align-items:center; justify-content:center; margin-bottom:1em; }
+.verify-card .icon svg{ width:20px; height:20px; stroke:var(--pink); }
+.verify-card h4{ font-family:var(--text); font-weight:700; font-size:var(--fs-base); color:var(--navy); margin-bottom:.6em; }
+.verify-card p{ font-size:var(--fs-base); color:var(--slate); line-height:1.5; }
+.verify-card p + p{ margin-top:.8em; padding-top:.7em; border-top:1px solid rgba(50,59,79,.1); color:var(--violet); font-weight:600; }
+
+.case-panel{ background:var(--navy-deepest); border:1px solid rgba(255,255,255,.08); border-radius:var(--r-lg); padding:clamp(28px,4vw,48px); }
+.case-panel h3{ font-family:var(--text); font-weight:700; font-size:var(--fs-md); color:#fff; margin-bottom:1.6em; }
+.funnel{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.funnel-step{ flex:1; min-width:170px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:var(--r-md); padding:1.4em 1.3em; }
+.funnel-step .n{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:var(--fs-2xl); color:var(--pink); }
+.funnel-step .d{ font-size:var(--fs-xs); color:var(--lav-l); margin-top:.3em; }
+.funnel-arrow{ flex:none; color:var(--lav-l); opacity:.6; }
+.funnel-note{ font-size:var(--fs-xs); color:var(--lav-l); margin-top:1.6em; opacity:.85; }
+
+/* ============ channels (05) ============ */
+.ch-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--sp-5); margin-bottom:22px; }
+.ch-card{ border-radius:var(--r-card); padding:2em; display:flex; flex-direction:column; gap:1.2em; }
+.ch-card.l1{ background:var(--lav-xl); }
+.ch-card.l2{ background:var(--lav-xl); }
+.ch-card.l3{ background:var(--navy-deepest); border:1px solid rgba(255,255,255,.1); }
+.ch-num{ display:flex; align-items:center; gap:.8em; }
+.ch-num .dot{ width:36px; height:36px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:700; font-size:var(--fs-sm); flex:none; }
+.ch-card.l3 .dot{ background:var(--pink); color:var(--navy-deepest); }
+.ch-num h4{ font-family:var(--text); font-weight:700; font-size:var(--fs-md); color:var(--navy); }
+.ch-card.l3 h4{ color:#fff; }
+.ch-card p{ font-size:var(--fs-base); line-height:1.55; color:var(--slate); }
+.ch-card.l3 p{ color:var(--lav-l); }
+.ch-pill-row{ display:flex; gap:8px; flex-wrap:wrap; }
+.ch-pill{ font-size:var(--fs-2xs); padding:.5em .9em; border-radius:999px; background:var(--paper); color:var(--navy); }
+.ch-pill.on{ background:var(--pink); color:var(--navy-deepest); font-weight:700; }
+.ch-highlight{ margin-top:auto; background:var(--navy); color:#fff; border-radius:var(--r-sm); padding:.85em 1em; font-size:var(--fs-sm); font-weight:600; }
+.ch-card.l3 .ch-highlight{ background:rgba(255,255,255,.08); }
+.ch-foot{ display:grid; grid-template-columns:.7fr 1.3fr; gap:18px; }
+.ch-foot .stat-card{ display:flex; flex-direction:column; justify-content:center; }
+.ch-foot .stat-card .num{ font-size:clamp(2.2rem,4vw,3rem); }
+.ch-foot .note-card{ background:var(--paper); border:1px solid rgba(50,59,79,.09); border-radius:var(--r-card); padding:var(--sp-5); display:flex; flex-direction:column; justify-content:center; }
+.ch-foot .note-card h5{ font-family:var(--text); font-weight:700; color:var(--navy); font-size:var(--fs-base); margin-bottom:.5em; }
+.ch-foot .note-card p{ font-size:var(--fs-sm); color:var(--slate); line-height:1.55; }
+
+/* ============ benefit (06) ============ */
+.benefit-layout{ display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(30px,5vw,60px); align-items:start; }
+.benefit-cpm{ font-family:var(--display); font-weight:900; letter-spacing:-.02em; font-size:clamp(3rem,6.4vw,4.6rem); background:var(--grad-signal); -webkit-background-clip:text; background-clip:text; color:transparent; line-height:1; margin-bottom:.28em; }
+.benefit-cpm-tag{ color:var(--lav-l); font-weight:400; font-size:var(--fs-base); margin-bottom:1.8em; }
+.benefit-list{ display:flex; flex-direction:column; gap:1.1em; }
+.benefit-list li{ display:flex; gap:.9em; align-items:flex-start; color:var(--lav-l); font-weight:400; font-size:var(--fs-md); line-height:1.55; }
+.benefit-list .b-mark{ flex:none; width:16px; height:14px; margin-top:.3em; color:var(--pink); }
+.clients-panel{ background:var(--navy-deepest); border:1px solid rgba(255,255,255,.08); border-radius:var(--r-lg); padding:2.2em; }
+.clients-panel h5{ color:#fff; font-family:var(--text); font-weight:700; font-size:var(--fs-base); margin-bottom:1.3em; }
+.clients-list{ display:flex; flex-direction:column; }
+.clients-list li{
+  font-family:var(--display); font-weight:700; letter-spacing:-.02em; font-size:var(--fs-md); color:var(--lav-l);
+  padding:.75em 0; border-top:1px solid rgba(255,255,255,.09);
+  transition:color .3s ease;
+}
+.clients-list li:first-child{ border-top:none; }
+.clients-list li:hover{ color:var(--pink); }
+
+/* ============ contact ============ */
+.contact-section{
+  background:radial-gradient(120% 100% at 50% 0%, #3c4560, var(--navy-deep) 60%, var(--navy-deepest) 100%);
+  text-align:center;
+}
+.contact-section .wrap{ display:flex; flex-direction:column; align-items:center; }
+.contact-section .eyebrow{ justify-content:center; }
+.contact-section h2{ max-width:18em; margin-left:auto; margin-right:auto; color:#F6F7FC; }
+.contact-section .lead{ margin:1em auto 2.4em; text-align:center; }
+.contact-actions{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-bottom:2.6em; }
+.contact-note{ font-size:var(--fs-xs); color:var(--lav-l); opacity:.7; max-width:30em; }
+
+/* ============ contact modal ============ */
+.contact-modal{ position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center; padding:24px; visibility:hidden; pointer-events:none; }
+.contact-modal.open{ visibility:visible; pointer-events:auto; }
+.contact-modal-backdrop{
+  position:absolute; inset:0; background:rgba(10,12,18,.6); backdrop-filter:blur(20px);
+  opacity:0; transition:opacity .5s var(--ease-spring-soft);
+}
+.contact-modal.open .contact-modal-backdrop{ opacity:1; }
+.contact-modal-card{
+  position:relative; z-index:1; width:100%; max-width:420px;
+  background:var(--glass-bg); backdrop-filter:blur(28px); border:1px solid var(--glass-border); border-radius:24px;
+  padding:2.4em 2.2em; text-align:center;
+  box-shadow:var(--shadow-glass);
+  transform:scale(.92) translateY(14px); opacity:0;
+  transition:transform .55s var(--ease-spring-soft), opacity .45s var(--ease-spring-soft);
+}
+.contact-modal.open .contact-modal-card{ transform:none; opacity:1; }
+.contact-modal-card .eyebrow{ justify-content:center; color:var(--pink); }
+.contact-modal-card h3{ font-family:var(--text); font-weight:700; font-size:var(--fs-md); color:#fff; margin:.9em 0 .7em; }
+.contact-modal-email{
+  display:inline-block; font-family:var(--display); font-weight:700; letter-spacing:-.02em; font-size:var(--fs-lg);
+  background:var(--grad-signal); -webkit-background-clip:text; background-clip:text; color:transparent;
+  margin-bottom:.6em; word-break:break-all;
+}
+.contact-modal-note{ font-size:var(--fs-sm); color:var(--lav-l); opacity:.75; }
+.contact-modal-close{
+  position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.16); background:transparent; color:#fff;
+  font-size:1.2rem; line-height:1; cursor:pointer; transition:border-color .3s ease, color .3s ease, transform .3s var(--ease-spring-soft);
+}
+.contact-modal-close:hover{ border-color:var(--pink); color:var(--pink); }
+.contact-modal-close:active{ transform:scale(.9); }
+
+/* ============ footer ============ */
+footer{ background:var(--navy-deepest); padding:48px 0 34px; }
+.footer-row{ display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap; }
+.footer-brand{ display:flex; align-items:center; gap:.6em; }
+.footer-brand .mark{ width:22px; height:19px; }
+.footer-brand span{ font-family:var(--display); font-weight:700; letter-spacing:-.02em; color:#fff; font-size:var(--fs-base); }
+.footer-nav{ display:flex; gap:20px; flex-wrap:wrap; }
+.footer-nav a{ font-size:var(--fs-sm); color:var(--lav-l); opacity:.8; }
+.footer-nav a:hover{ opacity:1; color:var(--pink); }
+.footer-copy{ font-size:var(--fs-2xs); color:var(--lav-l); opacity:.5; margin-top:28px; max-width:60em; line-height:1.6; }
+
+/* ============ responsive ============ */
+@media (max-width:980px){
+  nav.primary-nav{ display:none; }
+  .stat-rail{ grid-template-columns:repeat(2,1fr); }
+  .chart-grid{ grid-template-columns:1fr; }
+  .clock-layout{ grid-template-columns:1fr; justify-items:center; }
+  .clock-panel{ width:100%; max-width:420px; }
+  .mix-grid{ grid-template-columns:1fr; }
+  .uc-grid{ grid-template-columns:1fr; }
+  .fmt-grid{ grid-template-columns:1fr; }
+  .verify-grid{ grid-template-columns:repeat(2,1fr); }
+  .ch-grid{ grid-template-columns:1fr; }
+  .ch-foot{ grid-template-columns:1fr; }
+  .benefit-layout{ grid-template-columns:1fr; }
+  .growth-delta{ border-left:none; border-top:1px solid rgba(50,59,79,.14); padding-left:0; padding-top:20px; width:100%; }
+}
+@media (max-width:640px){
+  .stat-rail{ grid-template-columns:1fr; }
+  .growth-bar-year{ width:2.6em; font-size:var(--fs-xs); }
+  .growth-bar-num{ width:4.2em; font-size:var(--fs-sm); }
+  .verify-grid{ grid-template-columns:1fr; }
+  .hero{ padding-top:120px; }
+  .uc-card{ flex-direction:column; }
+  .clock-ring{ width:220px; height:220px; }
+  .clock-hand{ height:104px; }
+  .clock-ring-inner{ inset:22px; }
+  .clock-active-range{ font-size:var(--fs-lg); }
+  .clock-tab .range{ width:7.6em; font-size:var(--fs-xs); }
+  .clock-tab .name{ font-size:var(--fs-xs); }
+  .tv-format-meta{ grid-template-columns:1fr; }
+  .tv-vendor-head{ flex-direction:column; }
+}
+</style>
+</head>
+<body>
+
+<!-- reusable mark: two overlapping circles forming the onCTV lens (brand geometry, fill-rule cutout) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="onctv-mark" viewBox="0 0 257 218">
+    <path d="M40.9246 16.3281C68.4452 -2.47531 103.881 -3.97771 135.554 6.41797L136.393 6.69824L151.424 21.5322C198.444 27.5797 243.71 55.3153 255.22 106.588C262.006 146.371 247.307 180.229 215.923 201.673C188.402 220.476 152.966 221.978 121.293 211.582L120.455 211.303L106.359 197.236C106.055 196.927 105.855 196.691 105.719 196.513C58.4067 190.684 13.2042 162.984 1.62671 111.413C-5.15852 71.6299 9.53995 37.7717 40.9246 16.3281ZM150.982 22.2627C136.43 24.4349 102.927 35.9436 88.9871 66.833C75.9899 95.6338 70.103 141.396 105.718 196.268C119.492 194.598 153.501 182.986 167.86 151.168C180.811 122.47 186.18 76.8741 150.982 22.2627Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-row">
+    <a class="brand" href="#hero" aria-label="onCTV">
+      <svg class="mark" style="color:var(--pink)"><use href="#onctv-mark"/></svg>
+      <span class="brand-word">on<span>CTV</span></span>
+    </a>
+    <nav class="primary-nav" aria-label="Разделы">
+      <a href="#market">Ёмкость</a>
+      <a href="#cjm">Медиапотребление</a>
+      <a href="#formats">Возможности</a>
+      <a href="#verification">Измеримость</a>
+      <a href="#channels">CTV в медиасплите</a>
+      <a href="#benefit">Ценовые преимущества</a>
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn-primary" href="#siteFooter">Связаться с нами</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="section hero" id="hero">
+    <div class="eclipse" aria-hidden="true">
+      <div class="c1"></div>
+      <div class="c2"></div>
+    </div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow"><svg class="mark-dot" style="color:var(--pink)"><use href="#onctv-mark"/></svg>2026 · Медиакит для агентств и брендов</p>
+      <h1><svg class="mark"><use href="#onctv-mark"/></svg>nCTV</h1>
+      <p class="byline">CTV-реклама на Smart TV <b>by Adspector</b></p>
+      <p class="headline">Smart TV — самостоятельная рекламная среда <span class="accent">или</span> часть омниканального подхода</p>
+      <p class="sub"><b>onCTV</b> — рекламные размещения внутри CTV-экосистемы: в интерфейсе операционной системы телевизора, на главном экране устройства и внутри приложений для просмотра видео.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact" data-open-contact>Запросить доступ <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn-ghost" href="#formats">Смотреть форматы</a>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num" data-count data-to="60.6" data-decimals="1" data-suffix=" млн">0 млн</span>
+        <span class="hero-stat-label">Smart TV устройств в России <b>— 2025 год</b></span>
+        <span class="hero-stat-source">J’son &amp; Partners Consulting, «Рынок Smart TV в России. Итоги 2025 года», 15.04.2026</span>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>скролл</span><div class="line"></div></div>
+  </section>
+
+  <!-- ===================== 01 РЫНОК ===================== -->
+  <section class="section section--dark" id="market">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">01</span><span class="divider"></span><span>Потребитель и рынок</span></div>
+        <h2>Роль и положение CTV на рынке</h2>
+        <p class="lead">Smart TV — уже не «второй экран»: выше вовлечённость, а большинство зрителей смотрят и линейное ТВ, и онлайн одновременно.</p>
+      </div>
+
+      <div class="growth-panel reveal">
+        <div class="growth-head">
+          <span class="growth-eyebrow">Парк устройств</span>
+          <h3>Smart TV продолжает расти двузначными темпами</h3>
+        </div>
+        <div class="growth-body">
+          <div class="growth-bars">
+            <div class="growth-bar-row">
+              <span class="growth-bar-year">2024</span>
+              <div class="growth-bar-track"><div class="growth-bar-fill growth-bar-fill--prev" style="--target:.896"></div></div>
+              <span class="growth-bar-num" data-count data-to="54.3" data-decimals="1" data-suffix=" млн">0 млн</span>
+            </div>
+            <div class="growth-bar-row">
+              <span class="growth-bar-year">2025</span>
+              <div class="growth-bar-track"><div class="growth-bar-fill growth-bar-fill--curr" style="--target:1"></div></div>
+              <span class="growth-bar-num" data-count data-to="60.6" data-decimals="1" data-suffix=" млн">0 млн</span>
+            </div>
+          </div>
+          <div class="growth-delta">
+            <span class="growth-delta-num" data-count data-to="11.6" data-decimals="1" data-prefix="+" data-suffix="%">+0%</span>
+            <span class="growth-delta-cap">рост парка устройств год к году — <b data-count data-to="6.3" data-decimals="1" data-prefix="+" data-suffix=" млн">+0 млн</b> новых Smart TV</span>
+          </div>
+        </div>
+        <p class="growth-source">Источник: J’son &amp; Partners Consulting, «Рынок Smart TV в России. Итоги 2025 года», 15.04.2026</p>
+      </div>
+
+      <div class="stat-rail reveal-stagger">
+        <div class="stat-card"><span class="num">60%+</span><span class="cap">домохозяйств смотрят ТВ-контент через «умные» устройства</span></div>
+        <div class="stat-card"><span class="num">59% / 31%</span><span class="cap">владеют Smart TV / реально пользуются smart-функцией</span></div>
+        <div class="stat-card"><span class="num">+22,6%</span><span class="cap">рост охвата Smart TV в Санкт-Петербурге за год — лидер роста</span></div>
+      </div>
+
+      <div class="chart-grid reveal">
+        <div class="chart-panel">
+          <h3>Вовлечённость: Smart TV vs линейное ТВ</h3>
+          <div class="bars">
+            <div class="bar-group">
+              <div class="pair">
+                <div class="stick tv" style="height:47%"><span class="val">47</span></div>
+                <div class="stick ctv" style="height:53%"><span class="val">53</span></div>
+              </div>
+              <span class="cat">Не отвлекаются</span>
+            </div>
+            <div class="bar-group">
+              <div class="pair">
+                <div class="stick tv" style="height:45%"><span class="val">45</span></div>
+                <div class="stick ctv" style="height:36%"><span class="val">36</span></div>
+              </div>
+              <span class="cat">Другие дела параллельно</span>
+            </div>
+          </div>
+          <div class="legend"><span class="tv"><i></i>Линейное ТВ</span><span class="ctv"><i></i>Smart TV</span></div>
+          <p class="chart-note">59% зрителей называют «большой экран и высокое качество» главным преимуществом Smart TV.</p>
+        </div>
+        <div class="chart-panel">
+          <h3>Линейное ТВ и онлайн — единая медиасреда</h3>
+          <div class="donut-wrap">
+            <div class="donut"><span class="center">64%</span></div>
+            <ul class="donut-legend">
+              <li><i style="background:var(--navy)"></i><b>64%</b> смотрят и линейное ТВ, и онлайн</li>
+              <li><i style="background:var(--indigo)"></i><b>24%</b> смотрят только линейное ТВ</li>
+              <li><i style="background:var(--pink)"></i><b>13%</b> смотрят только онлайн</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="source-line">Источник: J’son &amp; Partners Consulting, Mediascope (TV Index, Brand Pulse), АКАР / оценка рынка, Okkam Consumer Journey Study — независимые данные</p>
+    </div>
+  </section>
+
+  <!-- ===================== 01A CJM ===================== -->
+  <section class="section section--darker" id="cjm">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">01A</span><span class="divider"></span><span>Тайм-слоты</span></div>
+        <h2>Где CTV встречается с пользователем в течение дня</h2>
+        <p class="lead">Суточное распределение телесмотрения делится на временные отрезки (тайм-слоты). Доступные форматы в onCTV позволяют проконтактировать с аудиторией на протяжении всего цикла ТВ-потребления.</p>
+      </div>
+
+      <div class="clock-layout reveal">
+        <div class="clock-stage">
+          <div class="clock-ring" id="clockRing">
+            <div class="clock-hand" id="clockHand"></div>
+            <div class="clock-ring-inner">
+              <span class="clock-active-range" id="clockRange">05:00–09:00</span>
+              <span class="clock-active-name" id="clockName">Утренний эфир</span>
+            </div>
+          </div>
+        </div>
+        <div class="clock-panel">
+          <div class="clock-tabs" id="clockTabs">
+            <button class="clock-tab is-active" data-i="0" type="button"><i class="dot" style="background:var(--pink)"></i><span class="range">05:00–09:00</span><span class="name">Утренний эфир</span></button>
+            <button class="clock-tab" data-i="1" type="button"><i class="dot" style="background:var(--lav-l)"></i><span class="range">09:00–17:00</span><span class="name">Дневной офф-прайм</span></button>
+            <button class="clock-tab" data-i="2" type="button"><i class="dot" style="background:var(--violet)"></i><span class="range">17:00–19:00</span><span class="name">Предпрайм</span></button>
+            <button class="clock-tab" data-i="3" type="button"><i class="dot" style="background:var(--indigo)"></i><span class="range">19:00–23:00</span><span class="name">Вечерний прайм-тайм</span></button>
+            <button class="clock-tab" data-i="4" type="button"><i class="dot" style="background:var(--slate)"></i><span class="range">23:00–05:00</span><span class="name">Поздний вечер и ночной эфир</span></button>
+          </div>
+          <div class="clock-detail" id="clockDetail">
+            <p class="clock-detail-desc" id="clockDesc">Зрители включают ТВ «фоном» во время сборов на работу или учёбу.</p>
+            <p class="clock-detail-content" id="clockContent"><b>Контент:</b> утренние развлекательно-информационные шоу, короткие блоки новостей, прогноз погоды</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 02 МЕДИАМИКС ===================== -->
+  <section class="section section--dark" id="mix">
+    <div class="grain"></div>
+    <div class="glow" style="width:46vw; height:46vw; max-width:640px; max-height:640px; right:-14%; top:-18%; background:radial-gradient(circle at 40% 40%, var(--pink), transparent 70%); opacity:.28;" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">02</span><span class="divider"></span><span>Медиамикс</span></div>
+        <h2>Где CTV находится в медиамиксах агентств</h2>
+      </div>
+
+      <div class="mix-grid reveal-stagger">
+        <div class="mix-card is-dark">
+          <span class="tag">объём CTV-рынка в России, 2025</span>
+          <div class="big">~15,5 млрд ₽</div>
+          <div class="body"><b style="color:#fff">+10%</b> видео (ТВ+OLV) — один из самых быстрорастущих традиционных сегментов рекламного рынка</div>
+          <div class="body"><b style="color:#fff">~16%</b> доля интерфейсной (OS-level) рекламы в CTV-рынке</div>
+        </div>
+        <div class="mix-card is-soft">
+          <span class="tag">сегмент продолжает расти</span>
+          <div class="big">+10%</div>
+          <div class="body">видео (ТВ+OLV) — 312 млрд ₽ в 2025 году, рост +10% к 2024</div>
+          <div class="quote">10,5–15 млрд ₽ именно CTV-сегмент в России, 2025 (диапазон отраслевых оценок)</div>
+          <div class="src">АКАР — индустриальный отчёт 2025; Digital Marketing Club Russia</div>
+        </div>
+        <div class="mix-card is-soft">
+          <div class="big">55,3%</div>
+          <div class="body">экспертов рекламного рынка называют видео и CTV/OTT вторым по перспективности направлением для роста рекламных бюджетов</div>
+          <div class="src">АРИР, опрос 47 экспертов рынка интерактивной рекламы</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 02A СЦЕНАРИИ ===================== -->
+  <section class="section section--darker" id="usecases">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">02A</span><span class="divider"></span><span>Применение</span></div>
+        <h2>Сценарии применения CTV в медиамиксе</h2>
+      </div>
+      <div class="uc-grid reveal-stagger">
+        <div class="uc-card">
+          <div class="uc-num">01</div>
+          <div><h4>First attention point</h4><span class="metric">30% визитов &lt; 24 часов</span><p>Реакция аудитории после показа — кейс Tutu.ru; размещение onCTV Vendors на уровне системного интерфейса, сразу после включения.</p></div>
+        </div>
+        <div class="uc-card">
+          <div class="uc-num">02</div>
+          <div><h4>Дешёвый вход на большой экран</h4><span class="metric">CPM −30–40%</span><p>Ниже, чем на линейном телевидении — собственные данные onCTV.</p></div>
+        </div>
+        <div class="uc-card">
+          <div class="uc-num">03</div>
+          <div><h4>Достройка охвата ТВ</h4><span class="metric">+63% уникального охвата</span><p>При переносе 6 п.п. бюджета в CTV (межд. данные, LG Ad Solutions); на РФ-данных — 24%+13% уникальной аудитории у ТВ и OLV.</p></div>
+        </div>
+        <div class="uc-card">
+          <div class="uc-num">04</div>
+          <div><h4>Премиальная аудитория</h4><span class="metric">Гео / соц-дем / история контента</span><p>onCTV Apps и onCTV Vendors дают точную настройку аудитории, а не декларацию о «премиальности».</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 03 ФОРМАТЫ ===================== -->
+  <section class="section section--dark" id="formats">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">03</span><span class="divider"></span><span>Возможности</span></div>
+        <h2>Форматы и примеры размещений</h2>
+        <p class="lead">Два продукта onCTV закрывают оба направления.</p>
+      </div>
+
+      <div class="fmt-grid reveal-stagger">
+        <div class="fmt-card" role="button" tabindex="0" data-product="vendors" aria-label="Смотреть форматы onCTV Vendors">
+          <div class="fmt-head"><h3>onCTV Vendors</h3><div class="sub">OS-уровень</div></div>
+          <p class="fmt-desc">Реклама на уровне интерфейса операционной системы телевизора: на главном экране, в меню, рекомендациях, фирменных приложениях производителя и других элементах пользовательского интерфейса.</p>
+          <div class="device-frame">
+            <div class="screen">
+              <div class="ph">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                <span>Скриншот Home Hero — добавится позже</span>
+              </div>
+            </div>
+          </div>
+          <div class="fmt-partners">
+            <span class="fmt-group-label">Производители Smart TV</span>
+            <div class="fmt-logos">
+              <img class="fmt-logo" src="assets/logos/lg.webp" alt="LG">
+              <img class="fmt-logo" src="assets/logos/xiaomi.webp" alt="Xiaomi">
+              <img class="fmt-logo" src="assets/logos/tcl.png" alt="TCL">
+              <img class="fmt-logo" src="assets/logos/haier.webp" alt="Haier">
+            </div>
+            <span class="fmt-group-label">Производители ОС</span>
+            <ul class="fmt-list"><li>Big Fish</li><li>Whale TV</li><li>Wild Red</li></ul>
+          </div>
+          <p class="fmt-meta"><b>Таргетинг:</b> гео, тип экрана, жанр, частота просмотра, приложения, время показа, диагональ</p>
+          <p class="fmt-note">Набор форматов, таргетингов, пикселей, диплинков и параметров отчётности зависит от конкретного производителя, операционной системы, модели устройства и схемы закупки.</p>
+          <div class="fmt-cap">Ёмкость: 1–8 млн показов / день–месяц</div>
+          <div class="fmt-open-hint">Смотреть все форматы <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+
+        <div class="fmt-card" role="button" tabindex="0" data-product="apps" aria-label="Смотреть форматы onCTV Apps">
+          <div class="fmt-head"><h3>onCTV Apps</h3><div class="sub">In-app-уровень</div></div>
+          <p class="fmt-desc">Реклама внутри приложений, устанавливаемых пользователями на Smart TV самостоятельно: в онлайн-кинотеатрах, видео-сервисах, ТВ-приложениях и агрегаторах контента.</p>
+          <div class="device-frame">
+            <div class="screen">
+              <div class="ph">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                <span>Скриншот In-Stream — добавится позже</span>
+              </div>
+            </div>
+          </div>
+          <div class="fmt-groups">
+            <div class="fmt-group"><span class="fmt-group-label">TV-Streaming</span><ul class="fmt-list"><li>Switch-Roll</li><li>Patch-Roll</li></ul></div>
+            <div class="fmt-group"><span class="fmt-group-label">VOD (Video on Demand)</span><ul class="fmt-list"><li>Pre-Roll</li></ul></div>
+          </div>
+          <p class="fmt-meta"><b>Таргетинг:</b> гео, соц-дем, канал, история контента за 30 дней, время показа, диагональ, регулируемый частотный кап</p>
+          <p class="fmt-note">Доступность конкретного формата зависит от приложения, источника инвентаря и рекламного SDK. Нельзя представлять весь список форматов как одновременно доступный во всех приложениях.</p>
+          <div class="fmt-cap">Ёмкость: 370 млн показов (до 150 млн / клиент)</div>
+          <div class="fmt-open-hint">Смотреть все форматы <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 04 ВЕРИФИКАЦИЯ ===================== -->
+  <section class="section section--darker" id="verification">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">04</span><span class="divider"></span><span>Верификация и замер</span></div>
+        <h2>Технические возможности по верификации и замерам</h2>
+      </div>
+
+      <div class="verify-grid reveal-stagger">
+        <div class="verify-card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9c4.5-4 11.5-4 16 0M7 12.5c2.7-2.4 6.6-2.4 9.3 0M10 16c1.1-1 2.9-1 4 0" stroke-linecap="round" stroke-width="1.6"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg></div>
+          <h4>Platforma</h4>
+          <p>Traffic-Lift через Ростелеком (11,8+ млн домохозяйств), кросс-девайс по Wi-Fi</p>
+          <p>Даёт: доказанный прирост визитов — тест / контроль, а не просто корреляция</p>
+        </div>
+        <div class="verify-card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H9l-4 4v-4H4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/></svg></div>
+          <h4>OMI</h4>
+          <p>Brand Lift через кастомные CAWI-опросы</p>
+          <p>Даёт: рост знания бренда и намерения купить — эффект на восприятие, не только клики</p>
+        </div>
+        <div class="verify-card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="18" rx="2" stroke-width="1.6"/><path d="M11 18h2" stroke-linecap="round" stroke-width="1.6"/></svg></div>
+          <h4>Adjust / AppsFlyer</h4>
+          <p>Мобильная атрибуция и трекинг установок приложений</p>
+          <p>Даёт: атрибуция установок и покупок в приложении к показу — считает ROI кампании</p>
+        </div>
+        <div class="verify-card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7l8-4 8 4-8 4-8-4zM4 12l8 4 8-4M4 17l8 4 8-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/></svg></div>
+          <h4>CDP-интеграции</h4>
+          <p>В разработке — следующий шаг развития измерения</p>
+          <p>Даёт: свяжет показ с полным путём клиента и офлайн-продажами</p>
+        </div>
+      </div>
+
+      <div class="case-panel reveal">
+        <h3>Доказано на практике — кейс Tutu.ru (38 дней, 19 млн показов)</h3>
+        <div class="funnel">
+          <div class="funnel-step"><div class="n">19 млн</div><div class="d">показов CTV</div></div>
+          <div class="funnel-arrow"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8h18M14 2l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="funnel-step"><div class="n">800 тыс.</div><div class="d">отложенных визитов на сайт</div></div>
+          <div class="funnel-arrow"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8h18M14 2l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="funnel-step"><div class="n">450 тыс.</div><div class="d">уникальных визитов</div></div>
+        </div>
+        <p class="funnel-note">30% визитов — в течение 24 часов после показа · более 50% — в течение 4 дней · плюс разбивка по гео, соц-дему и эффективности конверсии</p>
+      </div>
+      <p class="source-line">Источник: onctv.ru, кейс Adspector × Tutu.ru (AdIndex, ADPASS)</p>
+    </div>
+  </section>
+
+  <!-- ===================== 05 КАНАЛЫ ===================== -->
+  <section class="section section--dark" id="channels">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">05</span><span class="divider"></span><span>Модели сочетания каналов</span></div>
+        <h2>CTV в сочетании с другими каналами</h2>
+        <p class="lead">От одного экрана до полной интеграции своих продуктов — три модели участия CTV в кампании.</p>
+      </div>
+
+      <div class="ch-grid reveal-stagger">
+        <div class="ch-card l1">
+          <div class="ch-num"><span class="dot">01</span><h4>Одноканальность</h4></div>
+          <p>Показ и реакция аудитории — в одном интерфейсе Smart TV, без выхода в другие каналы.</p>
+          <div class="ch-highlight">Home Hero · Discovery — onCTV Vendors</div>
+          <p style="font-style:italic">Самый простой и быстрый контакт — первый шаг воронки</p>
+        </div>
+        <div class="ch-card l2">
+          <div class="ch-num"><span class="dot">02</span><h4>Кросс-канальность</h4></div>
+          <p>Показ на TV → находим того же зрителя в других каналах по cross-device сопоставлению.</p>
+          <div class="ch-pill-row">
+            <span class="ch-pill">TV</span><span class="ch-pill">Wi-Fi</span><span class="ch-pill">Телефон</span><span class="ch-pill on">Сайт</span>
+          </div>
+          <div class="ch-highlight">Кейс Tutu.ru: 30% визитов — в течение 24 часов после показа</div>
+        </div>
+        <div class="ch-card l3">
+          <div class="ch-num"><span class="dot">03</span><h4>Омниканальность</h4></div>
+          <p>Vendors и Apps — оба продукта: единая связка «реклама в интерфейсе ОС + реклама в приложениях на том же устройстве».</p>
+          <div class="ch-highlight">Общий частотный кап и дедупликация — полностью подконтрольный вам сценарий</div>
+        </div>
+      </div>
+
+      <div class="ch-foot reveal">
+        <div class="stat-card"><span class="num">74%</span><span class="cap">зрителей пользуются вторым экраном во время просмотра ТВ — фундамент кросс-канальной модели</span></div>
+        <div class="note-card"><h5>Доля растёт и за пределами молодой аудитории</h5><p>В США second-screening во время ТВ практикуют уже и зрители 55+ — тренд на слияние TV- и мобильного контура внимания усиливается во всех возрастах.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 ВЫГОДА ===================== -->
+  <section class="section section--darker" id="benefit">
+    <div class="grain"></div>
+    <div class="glow" style="width:50vw; height:50vw; max-width:700px; max-height:700px; left:-16%; bottom:-24%; background:radial-gradient(circle at 55% 45%, var(--indigo), transparent 70%); opacity:.3;" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">06</span><span class="divider"></span><span>Коммерческая выгода</span></div>
+        <h2>Коммерческая выгода для заказчика</h2>
+      </div>
+
+      <div class="benefit-layout reveal">
+        <div>
+          <div class="benefit-cpm">CPM −30–40%</div>
+          <p class="benefit-cpm-tag">по сравнению с линейным телевидением</p>
+          <ul class="benefit-list">
+            <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Регулируемый частотный кап (onCTV Apps)</li>
+            <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Продвинутая отчётность: показы → визиты → уникальные визиты, с разбивкой по скорости, гео и конверсии</li>
+            <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Свыше 1 млрд показов доставлено на TCL, Xiaomi, Haier и LG для 80+ брендов</li>
+            <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Низкий риск фрода по конструкции формата Menu branding — размещение на уровне системного интерфейса</li>
+          </ul>
+        </div>
+        <div class="clients-panel">
+          <h5>Уже работают с Adspector</h5>
+          <ul class="clients-list">
+            <li>Ozon</li><li>МосБиржа (MOEX)</li><li>Tutu</li><li>Teva</li><li>Okkam Group</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="section contact-section" id="contact">
+    <div class="eclipse" aria-hidden="true">
+      <div class="c1"></div>
+      <div class="c2"></div>
+    </div>
+    <div class="wrap">
+      <p class="eyebrow"><svg class="mark-dot" style="color:var(--pink)"><use href="#onctv-mark"/></svg>Контакты</p>
+      <h2>Готовы обсудить размещение на onCTV?</h2>
+      <p class="lead">Оставьте контакты — пришлём медиакит, форматы и условия размещения под ваш бюджет и сроки.</p>
+      <div class="contact-actions">
+        <a class="btn btn-primary" href="#contact" data-open-contact>Написать команде onCTV <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn-ghost" href="#formats">Скачать медиакит (PDF)</a>
+      </div>
+      <p class="contact-note">Ответим с почты клиентского сервиса в течение рабочего дня.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="contact-modal" id="contactModal" aria-hidden="true">
+  <div class="contact-modal-backdrop" data-close-contact></div>
+  <div class="contact-modal-card" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <button class="contact-modal-close" data-close-contact aria-label="Закрыть">×</button>
+    <p class="eyebrow"><svg class="mark-dot" style="color:var(--pink)"><use href="#onctv-mark"/></svg>Контакты</p>
+    <h3 id="contactModalTitle">Отдел клиентского сервиса Adspector</h3>
+    <a class="contact-modal-email" href="mailto:accounts@adspector.ru">accounts@adspector.ru</a>
+    <p class="contact-modal-note">Ответим в течение рабочего дня.</p>
+  </div>
+</div>
+
+<div class="tv-overlay" id="tvOverlay" aria-hidden="true">
+  <div class="tv-overlay-backdrop" data-close-tv></div>
+  <div class="tv-overlay-screen" id="tvOverlayScreen" role="dialog" aria-modal="true" aria-labelledby="tvOverlayTitle">
+    <div class="tv-overlay-scroll">
+      <button class="tv-overlay-close" data-close-tv aria-label="Закрыть">×</button>
+      <div class="tv-overlay-head">
+        <span class="tv-overlay-eyebrow" id="tvOverlayEyebrow"></span>
+        <h3 id="tvOverlayTitle"></h3>
+      </div>
+      <div class="tv-overlay-grid" id="tvOverlayGrid"></div>
+    </div>
+  </div>
+</div>
+
+<footer id="siteFooter">
+  <div class="wrap">
+    <div class="footer-row">
+      <a class="footer-brand" href="#hero">
+        <svg class="mark" style="color:var(--pink)"><use href="#onctv-mark"/></svg>
+        <span>onCTV by Adspector</span>
+      </a>
+      <nav class="footer-nav">
+        <a href="#market">Ёмкость</a>
+        <a href="#cjm">Медиапотребление</a>
+        <a href="#formats">Возможности</a>
+        <a href="#verification">Измеримость</a>
+        <a href="#channels">CTV в медиасплите</a>
+        <a href="#benefit">Ценовые преимущества</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </div>
+    <p class="footer-copy">© 2026 onCTV by Adspector. Черновик для обсуждения. Цифры и кейсы — данные onCTV (onctv.ru) и независимые источники: Mediascope, АКАР, АРИР, Okkam Group, AdIndex/ADPASS — см. подписи к разделам.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var header = document.getElementById('siteHeader');
+  var onScroll = function(){
+    if(window.scrollY > 24){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  };
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  var targets = document.querySelectorAll('.reveal, .reveal-stagger');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:.16, rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(t){ io.observe(t); });
+  } else {
+    targets.forEach(function(t){ t.classList.add('in'); });
+  }
+
+  function animateCount(el){
+    var to = parseFloat(el.getAttribute('data-to'));
+    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    var duration = 1500;
+    var startTime = null;
+    function step(ts){
+      if(!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = (to * eased).toFixed(decimals).replace('.', ',');
+      el.textContent = prefix + val + suffix;
+      if(p < 1){ requestAnimationFrame(step); }
+    }
+    requestAnimationFrame(step);
+  }
+  var countTargets = document.querySelectorAll('[data-count]');
+  if('IntersectionObserver' in window){
+    var countIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ animateCount(e.target); countIo.unobserve(e.target); }
+      });
+    }, {threshold:.5});
+    countTargets.forEach(function(t){ countIo.observe(t); });
+  } else {
+    countTargets.forEach(function(t){ animateCount(t); });
+  }
+
+  var DAYPARTS = [
+    { range:'05:00–09:00', name:'Утренний эфир', angle:30,
+      desc:'Зрители включают ТВ «фоном» во время сборов на работу или учёбу.',
+      content:'утренние развлекательно-информационные шоу, короткие блоки новостей, прогноз погоды' },
+    { range:'09:00–17:00', name:'Дневной офф-прайм', angle:120,
+      desc:'Время с низкой стоимостью рекламы. Ядро аудитории — домохозяйки, пенсионеры и дети, вернувшиеся из школы.',
+      content:'повторы вечерних сериалов, ток-шоу, судебные и кулинарные передачи' },
+    { range:'17:00–19:00', name:'Предпрайм', angle:195,
+      desc:'Аудитория начинает постепенно расти за счёт возвращающихся с работы людей.',
+      content:'линейные ситкомы, предвечерние выпуски новостей, развлекательные шоу' },
+    { range:'19:00–23:00', name:'Вечерний прайм-тайм', angle:240,
+      desc:'Главный этап суток с максимальным объёмом телесмотрения и самым большим потреблением контента. У экранов собирается вся семья.',
+      content:'главные премьеры сериалов, центральные выпуски новостей, масштабные шоу и кино' },
+    { range:'23:00–05:00', name:'Поздний вечер и ночной эфир', angle:315,
+      desc:'Аудитория постепенно снижается.',
+      content:'ночные ток-шоу, авторское кино, сериалы с возрастным цензом 18+' }
+  ];
+  var clockHand = document.getElementById('clockHand');
+  var clockRange = document.getElementById('clockRange');
+  var clockName = document.getElementById('clockName');
+  var clockTabs = document.querySelectorAll('.clock-tab');
+  var clockDetail = document.getElementById('clockDetail');
+  var clockDesc = document.getElementById('clockDesc');
+  var clockContent = document.getElementById('clockContent');
+  var clockIndex = 0;
+  var clockTimer = null;
+
+  function setClockSlot(i){
+    var d = DAYPARTS[i];
+    clockIndex = i;
+    clockHand.style.transform = 'translate(-50%,-100%) rotate(' + d.angle + 'deg)';
+    clockRange.textContent = d.range;
+    clockName.textContent = d.name;
+    clockTabs.forEach(function(t, idx){ t.classList.toggle('is-active', idx === i); });
+    clockDetail.classList.add('is-fading');
+    setTimeout(function(){
+      clockDesc.textContent = d.desc;
+      clockContent.innerHTML = '<b>Контент:</b> ' + d.content;
+      clockDetail.classList.remove('is-fading');
+    }, 220);
+  }
+  function advanceClock(){ setClockSlot((clockIndex + 1) % DAYPARTS.length); }
+  function restartClockCycle(){
+    if(clockTimer) clearInterval(clockTimer);
+    clockTimer = setInterval(advanceClock, 4500);
+  }
+  if(clockHand){
+    clockTabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){
+        setClockSlot(i);
+        restartClockCycle();
+      });
+    });
+    restartClockCycle();
+  }
+
+  var contactModal = document.getElementById('contactModal');
+  var contactCloseBtn = contactModal.querySelector('.contact-modal-close');
+  var contactOpener = null;
+
+  function openContact(e){
+    if(e) e.preventDefault();
+    contactOpener = document.activeElement;
+    contactModal.classList.add('open');
+    contactModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    contactCloseBtn.focus();
+  }
+  function closeContact(){
+    contactModal.classList.remove('open');
+    contactModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if(contactOpener && typeof contactOpener.focus === 'function'){ contactOpener.focus(); }
+  }
+  document.querySelectorAll('[data-open-contact]').forEach(function(el){
+    el.addEventListener('click', openContact);
+  });
+  contactModal.querySelectorAll('[data-close-contact]').forEach(function(el){
+    el.addEventListener('click', closeContact);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && contactModal.classList.contains('open')){ closeContact(); }
+  });
+
+  var FORMATS = {
+    vendors: {
+      eyebrow: 'onCTV Vendors · OS-уровень',
+      title: 'Форматы по производителям',
+      groups: [
+        {
+          vendor: 'TCL', logo: 'assets/logos/tcl.png',
+          intro: 'китайский производитель телевизоров, один из крупнейших в мире по объёму поставок. Инвентарь расположен в операционной системе TCL: на главной странице TCL Channel, в лаунчере и при выходе из браузера. Все форматы таргетируются по ГЕО и диагонали.',
+          formats: [
+            { name:'Homepage Video', desc:'Видео проигрывается в небольшом плеере на главной странице. По клику с пульта раскрывается на весь экран.', click:'Раскрытие на весь экран', targeting:'ГЕО, диагональ устройства', verify:'Пиксель любого верификатора' },
+            { name:'Homepage Banner Adslot', desc:'Баннер на главной странице TCL Channel в ОС TCL.', click:'Приложение в сторе TCL или сайт', targeting:'ГЕО, диагональ устройства', verify:'Пиксель любого верификатора' },
+            { name:'Banner in Launcher', desc:'Баннер в карусели перед входом в приложение TCL Channel — первый и самый заметный плейсмент.', click:'Приложение в сторе TCL или сайт', targeting:'ГЕО, диагональ устройства', verify:'Пиксель любого верификатора' },
+            { name:'Banner in Browser', desc:'Баннер в карусели, которая появляется при выходе из браузера (Browshere или Яндекс).', click:'Приложение в сторе TCL или сайт', targeting:'ГЕО, диагональ устройства', verify:'Пиксель любого верификатора' }
+          ]
+        },
+        {
+          vendor: 'LG', logo: 'assets/logos/lg.webp',
+          intro: 'южнокорейский производитель техники, смарт-телевизоры работают на собственной ОС webOS. Инвентарь — в самой ОС LG, а не в приложении LG Channels.',
+          formats: [
+            { name:'HomeHero', desc:'Слот на стартовой странице ОС LG. Может быть как видео, так и баннер.', click:'Посадочная страница клиента в браузере или установленное приложение', targeting:'ГЕО, соц-дем, диагонали, жанры, тип экрана', verify:'Пиксель любого верификатора' }
+          ]
+        },
+        {
+          vendor: 'Xiaomi', logo: 'assets/logos/xiaomi.webp',
+          intro: 'китайский производитель электроники, телевизоры работают с фирменной оболочкой PatchWall. Все форматы идут на всю РФ без таргетингов. Пиксель на показ принимается только от Adriver.',
+          formats: [
+            { name:'Inner Pages Banner', desc:'Баннер на внутренних страницах платформы (фильмы, сериалы).', click:'Приложение на Smart TV или браузер', targeting:'Не настраиваются, ГЕО — вся РФ', verify:'Клик — любой; показ — только Adriver' },
+            { name:'PatchWall Homepage', desc:'Баннер на первой видимой странице платформы. Показывается вместе с роликом, который запускается при наведении.', click:'Приложение на Smart TV или браузер', targeting:'Не настраиваются, ГЕО — вся РФ', verify:'Клик — любой; показ — только Adriver' },
+            { name:'Branding + Banner', desc:'Эксклюзивный формат onCTV: брендирование страницы VIP в ОС Xiaomi — часть первого контакта пользователя с устройством.', click:'Посадочная страница клиента в браузере', targeting:'Не настраиваются, ГЕО — вся РФ', verify:'Клик — любой; показ — только Adriver' }
+          ]
+        },
+        {
+          vendor: 'Haier', logo: 'assets/logos/haier.webp',
+          intro: 'китайский производитель бытовой техники и телевизоров. Инвентарь — в приложении Haier Evo TV. Поддерживает пиксели на показ всех известных верификаторов.',
+          formats: [
+            { name:'Banner Scroller', desc:'Баннер в центре главной страницы приложения Haier Evo TV — максимальная видимость у владельцев устройств Haier. Баннер кликабельный, вариант перехода выбирается под кампанию.', click:['Карточка клиента в Google Play на Smart TV','Сайт клиента','Промежуточный лендинг с УТП и QR-кодом (от клиента нужны текст и фон)'], targeting:'Не настраиваются, ГЕО — вся РФ', verify:'Показ — любой; клик — в кодированном виде' }
+          ]
+        }
+      ]
+    },
+    apps: {
+      eyebrow: 'onCTV Apps · In-app-уровень',
+      title: 'Форматы onCTV Apps',
+      items: ['Switch-Roll','Patch-Roll','Pre-Roll (VOD)']
+    }
+  };
+
+  var tvOverlay = document.getElementById('tvOverlay');
+  var tvScreen = document.getElementById('tvOverlayScreen');
+  var tvClose = tvOverlay.querySelectorAll('[data-close-tv]');
+  var tvEyebrow = document.getElementById('tvOverlayEyebrow');
+  var tvTitle = document.getElementById('tvOverlayTitle');
+  var tvGrid = document.getElementById('tvOverlayGrid');
+  var tvScroll = document.querySelector('.tv-overlay-scroll');
+  var tvOpener = null;
+  var tvStartRect = null;
+
+  function tvTargetRect(){
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var margin = Math.min(vw, vh) * .06;
+    var w = vw - margin*2;
+    var h = vh - margin*2;
+    var maxW = 1100;
+    if(w > maxW){ margin = (vw - maxW)/2; w = maxW; }
+    return { top: margin, left: (vw-w)/2, width: w, height: h };
+  }
+
+  function openTv(product, card){
+    var data = FORMATS[product];
+    if(!data) return;
+    tvOpener = card;
+    tvStartRect = card.querySelector('.device-frame').getBoundingClientRect();
+    if(tvScroll) tvScroll.scrollTop = 0;
+
+    tvEyebrow.textContent = data.eyebrow;
+    tvTitle.textContent = data.title;
+    if(data.groups){
+      tvGrid.classList.add('is-doc');
+      tvGrid.innerHTML = data.groups.map(function(g){
+        var rows = g.formats.map(function(f){
+          var clickHtml = Array.isArray(f.click)
+            ? '<ul class="tv-format-click-list">' + f.click.map(function(c){ return '<li>' + c + '</li>'; }).join('') + '</ul>'
+            : '<b>' + f.click + '</b>';
+          var shotHtml = f.shot
+            ? '<img class="tv-format-shot-img" src="' + f.shot + '" alt="' + f.name + '">'
+            : '<div class="tv-format-shot-ph"><span>Скриншот добавится позже</span></div>';
+          return '<div class="tv-format-row">'
+            + '<button class="tv-format-toggle" type="button" aria-expanded="false">'
+            + '<h4>' + f.name + '</h4>'
+            + '<svg class="tv-format-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            + '</button>'
+            + '<div class="tv-format-body"><div class="tv-format-body-inner">'
+            + '<p class="tv-format-desc">' + f.desc + '</p>'
+            + '<div class="tv-format-shot">' + shotHtml + '</div>'
+            + '<div class="tv-format-meta">'
+            + '<div><span>Клик ведёт</span>' + clickHtml + '</div>'
+            + '<div><span>Таргетинги</span><b>' + f.targeting + '</b></div>'
+            + '<div><span>Верификация</span><b>' + f.verify + '</b></div>'
+            + '</div>'
+            + '</div></div></div>';
+        }).join('');
+        return '<div class="tv-vendor">'
+          + '<div class="tv-vendor-head">'
+          + '<div class="tv-vendor-logo-chip"><img src="' + g.logo + '" alt="' + g.vendor + '"></div>'
+          + '<p class="tv-vendor-intro"><b>' + g.vendor + '</b> — ' + g.intro + '</p>'
+          + '</div>'
+          + '<div class="tv-format-list">' + rows + '</div>'
+          + '</div>';
+      }).join('');
+      tvGrid.querySelectorAll('.tv-format-toggle').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var row = btn.closest('.tv-format-row');
+          var open = row.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      });
+    } else {
+      tvGrid.classList.remove('is-doc');
+      tvGrid.innerHTML = data.items.map(function(label){
+        return '<div class="tv-format-tile"><div class="shot"><span>Скриншот добавится позже</span></div><div class="label">'+label+'</div></div>';
+      }).join('');
+    }
+
+    tvScreen.style.transition = 'none';
+    tvScreen.style.top = tvStartRect.top + 'px';
+    tvScreen.style.left = tvStartRect.left + 'px';
+    tvScreen.style.width = tvStartRect.width + 'px';
+    tvScreen.style.height = tvStartRect.height + 'px';
+
+    tvOverlay.classList.add('open');
+    tvOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(function(){
+      tvScreen.getBoundingClientRect();
+      tvScreen.style.transition = 'top .6s var(--ease-spring-soft), left .6s var(--ease-spring-soft), width .6s var(--ease-spring-soft), height .6s var(--ease-spring-soft)';
+      var target = tvTargetRect();
+      tvScreen.style.top = target.top + 'px';
+      tvScreen.style.left = target.left + 'px';
+      tvScreen.style.width = target.width + 'px';
+      tvScreen.style.height = target.height + 'px';
+    });
+    setTimeout(function(){ tvScreen.classList.add('content-in'); }, 260);
+
+    tvOverlay.querySelector('.tv-overlay-close').focus();
+  }
+
+  function closeTv(){
+    if(!tvOverlay.classList.contains('open')) return;
+    tvScreen.classList.remove('content-in');
+    if(tvStartRect){
+      tvScreen.style.transition = 'top .5s var(--ease-spring-soft), left .5s var(--ease-spring-soft), width .5s var(--ease-spring-soft), height .5s var(--ease-spring-soft), opacity .4s var(--ease-spring-soft)';
+      tvScreen.style.top = tvStartRect.top + 'px';
+      tvScreen.style.left = tvStartRect.left + 'px';
+      tvScreen.style.width = tvStartRect.width + 'px';
+      tvScreen.style.height = tvStartRect.height + 'px';
+      tvScreen.style.opacity = '0';
+    }
+    tvOverlay.classList.remove('open');
+    tvOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if(tvOpener && typeof tvOpener.focus === 'function'){ tvOpener.focus(); }
+    setTimeout(function(){ tvScreen.style.opacity = ''; }, 650);
+  }
+
+  document.querySelectorAll('.fmt-card[data-product]').forEach(function(card){
+    card.addEventListener('click', function(){ openTv(card.getAttribute('data-product'), card); });
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openTv(card.getAttribute('data-product'), card); }
+    });
+  });
+  tvClose.forEach(function(el){ el.addEventListener('click', closeTv); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && tvOverlay.classList.contains('open')){ closeTv(); }
+  });
+  window.addEventListener('resize', function(){
+    if(tvOverlay.classList.contains('open')){
+      var target = tvTargetRect();
+      tvScreen.style.top = target.top + 'px';
+      tvScreen.style.left = target.left + 'px';
+      tvScreen.style.width = target.width + 'px';
+      tvScreen.style.height = target.height + 'px';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

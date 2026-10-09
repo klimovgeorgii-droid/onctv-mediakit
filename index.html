@@ -247,10 +247,6 @@ nav.primary-nav a:hover{ color:#fff; }
   font-size:clamp(1.5rem,3vw,2.1rem);
   color:#fff; line-height:1.28; margin:.9em 0 .55em; max-width:15.5em;
 }
-.hero .headline .accent{
-  background:var(--grad-signal); -webkit-background-clip:text; background-clip:text; color:transparent;
-  font-style:italic;
-}
 .hero .sub{ color:var(--lav-l); font-weight:300; font-size:clamp(1rem,1.4vw,1.15rem); max-width:34em; margin-bottom:1.1em; }
 .hero .sub b{ color:#fff; font-weight:700; }
 .hero .note{ color:var(--lav-l); font-weight:400; font-size:var(--fs-base); max-width:36em; line-height:1.6; opacity:.8; margin-bottom:2.1em; }
@@ -280,29 +276,6 @@ nav.primary-nav a:hover{ color:#fff; }
 .scroll-cue .line{ width:1px; height:34px; background:linear-gradient(var(--pink), transparent); animation:scrollcue 2.2s ease-in-out infinite; }
 @keyframes scrollcue{ 0%{ opacity:0; transform:scaleY(.3); transform-origin:top;} 40%{opacity:1; transform:scaleY(1); transform-origin:top;} 100%{opacity:0; transform:scaleY(1); transform-origin:bottom;} }
 
-/* ============ growth panel (01) ============ */
-.growth-panel{
-  background:var(--lav-xl); border-radius:var(--r-lg); padding:clamp(28px,4vw,48px);
-  margin-bottom:clamp(28px,4vw,44px);
-}
-.growth-eyebrow{ display:block; font-size:var(--fs-2xs); font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--violet); margin-bottom:.5em; }
-.growth-head h3{ font-family:var(--display); font-weight:700; font-size:clamp(1.2rem,2vw,1.5rem); color:var(--navy); max-width:18em; }
-.growth-body{ display:flex; gap:clamp(28px,4vw,56px); align-items:center; margin-top:clamp(24px,3vw,36px); flex-wrap:wrap; }
-.growth-bars{ flex:1 1 380px; display:flex; flex-direction:column; gap:18px; min-width:280px; }
-.growth-bar-row{ display:flex; align-items:center; gap:14px; }
-.growth-bar-year{ flex:none; width:3.2em; font-family:var(--display); font-weight:700; font-size:var(--fs-sm); color:var(--slate); letter-spacing:-.01em; }
-.growth-bar-track{ flex:1; height:34px; border-radius:17px; background:rgba(50,59,79,.08); overflow:hidden; }
-.growth-bar-fill{ height:100%; width:100%; border-radius:17px; transform:scaleX(0); transform-origin:left; transition:transform 1.3s var(--ease); will-change:transform; }
-.growth-bar-fill--prev{ background:var(--lav-l); }
-.growth-bar-fill--curr{ background:var(--grad-signal); }
-.in .growth-bar-fill{ transform:scaleX(var(--target)); }
-.growth-bar-num{ flex:none; width:5em; text-align:right; font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:var(--fs-base); color:var(--navy); font-variant-numeric:tabular-nums; }
-.growth-delta{ flex:none; display:flex; flex-direction:column; gap:.3em; padding-left:clamp(20px,3vw,40px); border-left:1px solid rgba(50,59,79,.14); }
-.growth-delta-num{ font-family:var(--display); font-weight:900; letter-spacing:-.02em; font-size:clamp(2.2rem,3.6vw,3rem); color:var(--navy); font-variant-numeric:tabular-nums; line-height:1; }
-.growth-delta-cap{ font-size:var(--fs-sm); color:var(--slate); max-width:14em; margin-top:.3em; }
-.growth-delta-cap b{ color:var(--navy); }
-.growth-source{ font-size:var(--fs-2xs); color:var(--slate); opacity:.75; margin-top:clamp(20px,3vw,32px); }
-
 /* ============ stat rail (01) ============ */
 .stat-rail{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5); margin-bottom:clamp(44px,6vw,68px); }
 .stat-card{
@@ -312,55 +285,7 @@ nav.primary-nav a:hover{ color:#fff; }
 .stat-card .num{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:clamp(1.6rem,2.6vw,2.1rem); color:var(--navy); display:block; margin-bottom:.32em; }
 .stat-card .cap{ font-size:var(--fs-sm); color:var(--slate); line-height:1.5; }
 
-.chart-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(28px,4vw,56px); align-items:start; }
-.chart-panel h3{ font-family:var(--text); font-weight:700; font-size:var(--fs-base); color:#fff; margin-bottom:1.4em; }
-
-.bars{ display:flex; gap:clamp(24px,4vw,56px); align-items:flex-end; height:190px; margin-bottom:1em; }
-.bar-group{ display:flex; flex-direction:column; align-items:center; gap:10px; flex:1; }
-.bar-group .pair{ display:flex; gap:10px; align-items:flex-end; height:150px; }
-.bar-group .stick{ width:34px; border-radius:8px 8px 3px 3px; position:relative; transform:scaleY(0); transform-origin:bottom; transition:transform 1s var(--ease); }
-.in .bar-group .stick{ transform:scaleY(1); }
-.bar-group .stick.tv{ background:var(--lav-l); }
-.bar-group .stick.ctv{ background:linear-gradient(180deg, var(--pink), var(--indigo)); }
-.bar-group .stick .val{ position:absolute; top:-24px; left:50%; transform:translateX(-50%); font-size:var(--fs-2xs); font-weight:700; color:#fff; white-space:nowrap; }
-.bar-group .cat{ font-size:var(--fs-xs); color:var(--lav-l); text-align:center; }
-.legend{ display:flex; gap:18px; font-size:var(--fs-sm); color:var(--lav-l); }
-.legend span{ display:inline-flex; align-items:center; gap:.5em; }
-.legend i{ width:10px; height:10px; border-radius:3px; }
-.legend .tv i{ background:var(--lav-l); }
-.legend .ctv i{ background:linear-gradient(120deg, var(--pink), var(--indigo)); }
-.chart-note{ font-size:var(--fs-sm); color:var(--lav-l); margin-top:1.1em; }
-
-.donut-wrap{ display:flex; flex-direction:column; align-items:center; gap:1.4em; }
-.donut{
-  width:200px; height:200px; border-radius:50%;
-  background:conic-gradient(var(--navy) 0 64%, var(--indigo) 64% 88%, var(--pink) 88% 100%);
-  display:flex; align-items:center; justify-content:center;
-  position:relative;
-  transform:scale(.6); opacity:0; transition:transform 1s var(--ease), opacity 1s var(--ease);
-}
-.in .donut{ transform:scale(1); opacity:1; }
-.donut::after{ content:""; position:absolute; inset:24%; background:var(--paper); border-radius:50%; }
-.donut .center{ position:relative; z-index:1; text-align:center; font-family:var(--display); font-weight:800; letter-spacing:-.02em; color:var(--navy); font-size:var(--fs-xl); }
-.donut-legend{ display:grid; gap:.6em; width:100%; max-width:260px; }
-.donut-legend li{ display:flex; align-items:center; gap:.7em; font-size:var(--fs-sm); color:var(--lav-l); }
-.donut-legend i{ width:11px; height:11px; border-radius:3px; flex:none; }
-.donut-legend b{ color:#fff; min-width:2.6em; }
 .source-line{ font-size:var(--fs-2xs); color:var(--lav-l); opacity:.7; margin-top:2.4em; }
-
-/* ============ CJM (01A) ============ */
-/* ============ mix (02) ============ */
-.mix-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--sp-5); }
-.mix-card{ border-radius:var(--r-card); padding:2em 1.8em; }
-.mix-card.is-dark{ background:var(--navy-deepest); border:1px solid rgba(255,255,255,.08); }
-.mix-card.is-soft{ background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.09); }
-.mix-card .big{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:clamp(1.7rem,2.6vw,2.3rem); line-height:1.15; color:#fff; margin:.4em 0 .3em; }
-.mix-card.is-dark .big{ font-size:clamp(2.1rem,3.2vw,2.7rem); }
-.mix-card .tag{ font-size:var(--fs-sm); color:var(--lav-l); }
-.mix-card .body{ font-size:var(--fs-base); font-weight:400; color:var(--lav-l); line-height:1.55; margin-top:.9em; }
-.mix-card .body + .body{ margin-top:1.3em; padding-top:1.1em; border-top:1px solid rgba(255,255,255,.1); }
-.mix-card .quote{ font-size:var(--fs-md); color:#fff; line-height:1.55; margin-top:1em; }
-.mix-card .src{ font-size:var(--fs-2xs); color:var(--lav-l); opacity:.65; margin-top:1em; }
 
 /* ============ use cases (02A) ============ */
 .uc-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-5); }
@@ -534,24 +459,6 @@ nav.primary-nav a:hover{ color:#fff; }
 .tv-format-click-list li{ font-size:var(--fs-xs); color:var(--lav-l); line-height:1.4; padding-left:.85em; position:relative; }
 .tv-format-click-list li::before{ content:"–"; position:absolute; left:0; color:var(--violet); }
 
-/* ============ verification (04) ============ */
-.verify-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5); margin-bottom:clamp(28px,4vw,44px); }
-.verify-card{ background:var(--lav-xl); border:1px solid rgba(50,59,79,.09); border-radius:var(--r-card); padding:var(--sp-5); }
-.verify-card .icon{ width:42px; height:42px; border-radius:var(--r-sm); background:var(--navy); display:flex; align-items:center; justify-content:center; margin-bottom:1em; }
-.verify-card .icon svg{ width:20px; height:20px; stroke:var(--pink); }
-.verify-card h4{ font-family:var(--text); font-weight:700; font-size:var(--fs-base); color:var(--navy); margin-bottom:.6em; }
-.verify-card p{ font-size:var(--fs-base); color:var(--slate); line-height:1.5; }
-.verify-card p + p{ margin-top:.8em; padding-top:.7em; border-top:1px solid rgba(50,59,79,.1); color:var(--violet); font-weight:600; }
-
-.case-panel{ background:var(--navy-deepest); border:1px solid rgba(255,255,255,.08); border-radius:var(--r-lg); padding:clamp(28px,4vw,48px); }
-.case-panel h3{ font-family:var(--text); font-weight:700; font-size:var(--fs-md); color:#fff; margin-bottom:1.6em; }
-.funnel{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-.funnel-step{ flex:1; min-width:170px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:var(--r-md); padding:1.4em 1.3em; }
-.funnel-step .n{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:var(--fs-2xl); color:var(--pink); }
-.funnel-step .d{ font-size:var(--fs-xs); color:var(--lav-l); margin-top:.3em; }
-.funnel-arrow{ flex:none; color:var(--lav-l); opacity:.6; }
-.funnel-note{ font-size:var(--fs-xs); color:var(--lav-l); margin-top:1.6em; opacity:.85; }
-
 /* ============ channels (05) ============ */
 .ch-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--sp-5); margin-bottom:22px; }
 .ch-card{ border-radius:var(--r-card); padding:2em; display:flex; flex-direction:column; gap:1.2em; }
@@ -595,50 +502,102 @@ nav.primary-nav a:hover{ color:#fff; }
 .clients-track:hover{ animation-play-state:paused; }
 @keyframes clientsMarquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 
-/* ============ contact ============ */
-.contact-section{
-  background:radial-gradient(120% 100% at 50% 0%, #3c4560, var(--navy-deep) 60%, var(--navy-deepest) 100%);
-  text-align:center;
-}
-.contact-section .wrap{ display:flex; flex-direction:column; align-items:center; }
-.contact-section .eyebrow{ justify-content:center; }
-.contact-section h2{ max-width:18em; margin-left:auto; margin-right:auto; color:#F6F7FC; }
-.contact-section .lead{ margin:1em auto 2.4em; text-align:center; }
-.contact-actions{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-bottom:2.6em; }
-.contact-note{ font-size:var(--fs-xs); color:var(--lav-l); opacity:.7; max-width:30em; }
 
-/* ============ contact modal ============ */
-.contact-modal{ position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center; padding:24px; visibility:hidden; pointer-events:none; }
-.contact-modal.open{ visibility:visible; pointer-events:auto; }
-.contact-modal-backdrop{
-  position:absolute; inset:0; background:rgba(10,12,18,.6); backdrop-filter:blur(20px);
-  opacity:0; transition:opacity .5s var(--ease-spring-soft);
+/* ============ advantages strip + trust ============ */
+.adv-section{ padding:clamp(var(--sp-7),7vw,var(--sp-8)) 0 clamp(36px,5vw,56px); }
+.adv-strip{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border:1px solid rgba(255,255,255,.12); border-radius:var(--r-lg);
+  background:linear-gradient(135deg, rgba(129,141,255,.16), rgba(248,140,255,.07));
+  overflow:hidden;
 }
-.contact-modal.open .contact-modal-backdrop{ opacity:1; }
-.contact-modal-card{
-  position:relative; z-index:1; width:100%; max-width:420px;
-  background:var(--glass-bg); backdrop-filter:blur(28px); border:1px solid var(--glass-border); border-radius:24px;
-  padding:2.4em 2.2em; text-align:center;
-  box-shadow:var(--shadow-glass);
-  transform:scale(.92) translateY(14px); opacity:0;
-  transition:transform .55s var(--ease-spring-soft), opacity .45s var(--ease-spring-soft);
-}
-.contact-modal.open .contact-modal-card{ transform:none; opacity:1; }
-.contact-modal-card .eyebrow{ justify-content:center; color:var(--pink); }
-.contact-modal-card h3{ font-family:var(--text); font-weight:700; font-size:var(--fs-md); color:#fff; margin:.9em 0 .7em; }
-.contact-modal-email{
-  display:inline-block; font-family:var(--display); font-weight:700; letter-spacing:-.02em; font-size:var(--fs-lg);
-  background:var(--grad-signal); -webkit-background-clip:text; background-clip:text; color:transparent;
-  margin-bottom:.6em; word-break:break-all;
-}
-.contact-modal-note{ font-size:var(--fs-sm); color:var(--lav-l); opacity:.75; }
-.contact-modal-close{
-  position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
-  border:1px solid rgba(255,255,255,.16); background:transparent; color:#fff;
-  font-size:1.2rem; line-height:1; cursor:pointer; transition:border-color .3s ease, color .3s ease, transform .3s var(--ease-spring-soft);
-}
-.contact-modal-close:hover{ border-color:var(--pink); color:var(--pink); }
-.contact-modal-close:active{ transform:scale(.9); }
+.adv-item{ padding:clamp(22px,3vw,34px) clamp(20px,2.4vw,30px); border-left:1px solid rgba(255,255,255,.1); min-width:0; }
+.adv-item:first-child{ border-left:none; }
+.adv-num{ display:block; font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; font-size:clamp(1.7rem,2.9vw,2.5rem); line-height:1.05; color:#fff; white-space:nowrap; }
+.adv-num sup{ font-size:.5em; color:var(--pink); vertical-align:top; position:relative; top:.1em; margin-left:.08em; }
+.adv-cap{ display:block; margin-top:.7em; font-size:var(--fs-sm); color:var(--lav-l); line-height:1.5; }
+.trust{ margin-top:clamp(28px,4vw,44px); display:flex; align-items:center; gap:clamp(20px,3vw,40px); }
+.trust h5{ flex:none; margin:0; font-family:var(--text); font-weight:700; font-size:var(--fs-sm); letter-spacing:.1em; text-transform:uppercase; color:var(--lav-l); opacity:.8; }
+.trust .clients-marquee{ flex:1; min-width:0; }
+
+/* ============ why onCTV (01) ============ */
+.why-sub{ font-family:var(--display); font-weight:700; font-size:clamp(1.3rem,2.4vw,1.8rem); color:#F6F7FC; margin:clamp(40px,6vw,64px) 0 clamp(20px,3vw,32px); max-width:20em; line-height:1.15; }
+.why-sub:first-of-type{ margin-top:0; }
+.stat-rail--2{ grid-template-columns:repeat(2,1fr); }
+.stat-rail--2 .stat-card .num{ font-size:clamp(1.5rem,2.4vw,1.9rem); }
+.stat-rail--2 .stat-card .cap b{ color:var(--navy); }
+.why-quote{ font-size:var(--fs-md); color:#fff; line-height:1.55; max-width:44em; padding-left:1.2em; border-left:2px solid var(--pink); margin-bottom:clamp(28px,4vw,40px); }
+
+/* ============ journey (05) ============ */
+.journey{ display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); position:relative; }
+.journey::before{ content:""; position:absolute; left:6%; right:6%; top:44px; height:2px; background:linear-gradient(90deg,var(--pink),var(--indigo)); opacity:.45; z-index:0; }
+.step{ position:relative; z-index:1; background:var(--lav-xl); border:1px solid rgba(50,59,79,.09); border-radius:var(--r-card); padding:var(--sp-5); display:flex; flex-direction:column; gap:1em; min-width:0; }
+.step-moment{ display:flex; align-items:center; gap:.7em; font-size:var(--fs-2xs); font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--violet); }
+.step-moment b{ width:30px; height:30px; flex:none; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-size:var(--fs-xs); letter-spacing:0; }
+.step h3{ font-family:var(--display); font-weight:700; font-size:var(--fs-md); line-height:1.2; color:var(--navy); min-height:3.6em; }
+.step dl{ margin:0; display:flex; flex-direction:column; gap:.9em; padding-top:1em; border-top:1px solid rgba(50,59,79,.14); }
+.step dt{ font-size:var(--fs-2xs); font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--violet); margin-bottom:.2em; }
+.step dd{ margin:0; font-size:var(--fs-sm); color:var(--slate); line-height:1.45; }
+.perf{ margin-top:var(--sp-5); display:flex; align-items:center; gap:clamp(16px,3vw,32px); flex-wrap:wrap; background:var(--navy-deepest); border:1px solid rgba(255,255,255,.1); border-radius:var(--r-lg); padding:var(--sp-5) clamp(22px,3vw,36px); }
+.perf b{ font-family:var(--display); font-weight:700; font-size:var(--fs-md); color:#fff; flex:none; }
+.perf p{ flex:1 1 280px; font-size:var(--fs-base); color:var(--lav-l); line-height:1.55; }
+
+/* ============ measure (06) ============ */
+.measure{ display:grid; grid-template-columns:1.15fr .85fr; gap:var(--sp-5); align-items:stretch; }
+.mlist{ background:var(--lav-xl); border-radius:var(--r-lg); padding:clamp(8px,1.4vw,16px) clamp(22px,3vw,36px); }
+.mrow{ display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:var(--sp-5); padding:1.4em 0; border-bottom:1px solid rgba(50,59,79,.14); align-items:start; }
+.mrow:last-child{ border-bottom:none; }
+.mrow h4{ font-family:var(--display); font-weight:700; font-size:var(--fs-base); color:var(--navy); line-height:1.2; }
+.mrow h4 small{ display:block; font-family:var(--text); font-weight:600; font-size:var(--fs-xs); color:var(--indigo); margin-top:.5em; letter-spacing:0; }
+.mrow p{ font-size:var(--fs-base); color:var(--slate); line-height:1.5; }
+.mrow p em{ display:block; font-style:normal; font-size:var(--fs-xs); color:var(--violet); margin-top:.5em; }
+.quality{ position:relative; overflow:hidden; background:linear-gradient(160deg,#3a2f8f,#241a63 70%); border:1px solid rgba(255,255,255,.12); border-radius:var(--r-lg); padding:clamp(24px,3vw,36px); }
+.quality .eyebrow{ margin-bottom:1em; }
+.quality h3{ font-family:var(--display); font-weight:700; font-size:clamp(1.25rem,2.1vw,1.6rem); line-height:1.2; color:#fff; margin-bottom:1.4em; }
+.quality ul{ display:flex; flex-direction:column; gap:1.2em; }
+.quality li{ display:flex; gap:.9em; align-items:flex-start; font-size:var(--fs-base); color:var(--lav-l); line-height:1.5; }
+.quality li svg{ flex:none; width:22px; height:22px; margin-top:.15em; color:var(--pink); }
+.quality li b{ color:#fff; }
+
+/* ============ case (07) ============ */
+.case-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-4); }
+.case-nums{ display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-4); }
+.cn{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:var(--r-card); padding:var(--sp-5); display:flex; flex-direction:column; gap:.6em; min-width:0; }
+.cn b{ font-family:var(--display); font-weight:800; letter-spacing:-.02em; font-size:clamp(2rem,4vw,3.1rem); line-height:1; color:#fff; font-variant-numeric:tabular-nums; }
+.cn b small{ font-size:.42em; color:var(--pink); margin-left:.25em; letter-spacing:0; }
+.cn span{ font-size:var(--fs-sm); color:var(--lav-l); line-height:1.5; }
+.case-story{ background:var(--paper); border-radius:var(--r-lg); padding:clamp(24px,3vw,36px); display:flex; flex-direction:column; gap:1.1em; min-width:0; }
+.case-who{ display:flex; align-items:center; gap:.8em; font-family:var(--display); font-weight:800; font-size:var(--fs-xl); color:var(--navy); letter-spacing:-.02em; }
+.case-who span{ font-family:var(--text); font-weight:700; font-size:var(--fs-2xs); letter-spacing:.1em; text-transform:uppercase; color:var(--indigo); background:var(--lav-xl); padding:.4em .9em; border-radius:999px; }
+.case-story p{ font-size:var(--fs-base); color:var(--slate); line-height:1.55; }
+.case-story p b{ color:var(--navy); }
+.cum{ margin-top:auto; padding-top:1.2em; border-top:1px solid rgba(50,59,79,.12); }
+.cum-lbl{ font-size:var(--fs-xs); font-weight:700; color:var(--navy); margin-bottom:1em; }
+.cum-bars{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; align-items:end; height:130px; }
+.cum-col{ display:flex; flex-direction:column; justify-content:flex-end; height:100%; gap:.5em; }
+.cum-col i{ display:block; border-radius:8px 8px 3px 3px; background:var(--grad-signal); height:var(--h); transform:scaleY(0); transform-origin:bottom; transition:transform 1s var(--ease); }
+.in .cum-col i{ transform:scaleY(1); }
+.cum-col b{ font-family:var(--display); font-weight:800; font-size:var(--fs-base); color:var(--navy); letter-spacing:-.02em; }
+.cum-axis{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:.7em; font-size:var(--fs-xs); color:var(--slate); }
+.case-src{ font-size:var(--fs-2xs); color:var(--slate); opacity:.75; }
+
+/* ============ contact ============ */
+.contact-section{ background:radial-gradient(120% 100% at 80% 0%, #3c4560, var(--navy-deep) 60%, var(--navy-deepest) 100%); }
+.contact-section .eclipse{ right:-18%; top:-30%; width:min(55vw,820px); height:min(55vw,820px); opacity:.35; }
+.contact-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(32px,5vw,72px); align-items:start; }
+.contact-section h2{ font-size:clamp(1.7rem,3.2vw,2.5rem); color:#F6F7FC; max-width:15em; }
+.steps3{ margin:clamp(28px,4vw,44px) 0 0; padding:0; list-style:none; counter-reset:s3; display:flex; flex-direction:column; gap:var(--sp-4); }
+.steps3 li{ counter-increment:s3; display:flex; gap:1.2em; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:var(--r-card); padding:var(--sp-5); }
+.steps3 li::before{ content:counter(s3); flex:none; width:44px; height:44px; border-radius:50%; background:var(--grad-signal); color:#1c1330; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:800; }
+.steps3 h4{ font-family:var(--text); font-weight:700; font-size:var(--fs-md); color:#fff; margin-bottom:.35em; }
+.steps3 p{ font-size:var(--fs-base); color:var(--lav-l); line-height:1.55; }
+.contact-card{ background:var(--glass-bg); backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--r-lg); padding:clamp(24px,3.4vw,40px); display:flex; flex-direction:column; gap:1.3em; }
+.contact-card .lead{ font-size:var(--fs-base); margin:0; }
+.mail{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:var(--r-md); padding:.7em .7em .7em 1.2em; }
+.mail code{ font-family:var(--display); font-weight:700; letter-spacing:-.02em; font-size:var(--fs-md); color:#fff; word-break:break-all; }
+.mail .btn{ padding:.6em 1.2em; font-size:var(--fs-sm); }
+.contact-card .btn-ghost{ justify-content:center; }
+
 
 /* ============ footer ============ */
 footer{ background:var(--navy-deepest); padding:48px 0 34px; }
@@ -651,29 +610,39 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
 .footer-nav a:hover{ opacity:1; color:var(--pink); }
 .footer-copy{ font-size:var(--fs-2xs); color:var(--lav-l); opacity:.5; margin-top:28px; max-width:60em; line-height:1.6; }
 
+
 /* ============ responsive ============ */
 @media (max-width:980px){
   nav.primary-nav{ display:none; }
   .stat-rail{ grid-template-columns:repeat(2,1fr); }
-  .chart-grid{ grid-template-columns:1fr; }
-  .mix-grid{ grid-template-columns:1fr; }
-  .uc-grid{ grid-template-columns:1fr; }
+  .uc-grid, .uc-grid--3{ grid-template-columns:1fr; }
   .fmt-grid{ grid-template-columns:1fr; }
-  .verify-grid{ grid-template-columns:repeat(2,1fr); }
   .ch-grid{ grid-template-columns:1fr; }
   .ch-foot{ grid-template-columns:1fr; }
   .benefit-layout{ grid-template-columns:1fr; }
-  .growth-delta{ border-left:none; border-top:1px solid rgba(50,59,79,.14); padding-left:0; padding-top:20px; width:100%; }
+  .adv-strip{ grid-template-columns:repeat(2,1fr); }
+  .adv-item:nth-child(3){ border-left:none; }
+  .adv-item:nth-child(n+3){ border-top:1px solid rgba(255,255,255,.1); }
+  .journey{ grid-template-columns:repeat(2,1fr); }
+  .journey::before{ display:none; }
+  .step h3{ min-height:0; }
+  .measure, .case-grid, .contact-grid{ grid-template-columns:1fr; }
+  .trust{ flex-direction:column; align-items:flex-start; gap:14px; }
+  .trust .clients-marquee{ width:100%; }
 }
 @media (max-width:640px){
-  .stat-rail{ grid-template-columns:1fr; }
-  .growth-bar-year{ width:2.6em; font-size:var(--fs-xs); }
-  .growth-bar-num{ width:4.2em; font-size:var(--fs-sm); }
-  .verify-grid{ grid-template-columns:1fr; }
+  .stat-rail, .stat-rail--2{ grid-template-columns:1fr; }
   .hero{ padding-top:120px; }
   .uc-card{ flex-direction:column; }
+  .adv-strip{ grid-template-columns:1fr; }
+  .adv-item{ border-left:none; border-top:1px solid rgba(255,255,255,.1); }
+  .adv-item:first-child{ border-top:none; }
+  .journey{ grid-template-columns:1fr; }
+  .mrow{ grid-template-columns:1fr; gap:.6em; }
+  .case-nums{ grid-template-columns:1fr; }
   .tv-format-meta{ grid-template-columns:1fr; }
   .tv-vendor-head{ flex-direction:column; }
+  .steps3 li{ flex-direction:column; }
 }
 </style>
 </head>
@@ -693,19 +662,19 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
       <span class="brand-word">on<span>CTV</span></span>
     </a>
     <nav class="primary-nav" aria-label="Разделы">
-      <a href="#whatis">Экосистема</a>
-      <a href="#market">Рынок</a>
-      <a href="#mix">Почему onCTV</a>
+      <a href="#whatis">Почему onCTV</a>
       <a href="#formats">Возможности</a>
       <a href="#verification">Измеримость</a>
+      <a href="#case">Кейс</a>
       <a href="#channels">CTV в медиасплите</a>
       <a href="#benefit">Ценовые преимущества</a>
     </nav>
     <div class="header-cta">
-      <a class="btn btn-primary" href="#siteFooter">Связаться с нами</a>
+      <a class="btn btn-primary" href="#contact">Связаться с нами</a>
     </div>
   </div>
 </header>
+
 
 <main>
 
@@ -719,11 +688,11 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
       <p class="eyebrow"><svg class="mark-dot" style="color:var(--pink)"><use href="#onctv-mark"/></svg>2026 · Медиакит для агентств и брендов</p>
       <h1><svg class="mark"><use href="#onctv-mark"/></svg>nCTV</h1>
       <p class="byline">CTV-реклама на Smart TV <b>by Adspector</b></p>
-      <p class="headline">Реклама на большом экране, когда пользователь выбирает, что <span class="accent">смотреть</span></p>
+      <p class="headline">Реклама на большом экране, когда пользователь выбирает, что смотреть</p>
       <p class="sub">Размещаем рекламу в интерфейсе Smart TV и внутри приложений для просмотра видео: от первого контакта на главном экране до показа перед началом контента.</p>
       <p class="note">onCTV объединяет два уровня CTV-рекламы: размещения в операционных системах телевизоров и рекламу внутри OTT-приложений. Форматы, таргетинги и отчётность настраиваются с учётом конкретного вендора, приложения и задачи кампании.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#contact" data-open-contact>Запросить доступ <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn-primary" href="#contact">Получить медиаплан <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         <a class="btn btn-ghost" href="#formats">Смотреть форматы</a>
       </div>
       <div class="hero-stat">
@@ -735,30 +704,68 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
     <div class="scroll-cue"><span>скролл</span><div class="line"></div></div>
   </section>
 
-  <!-- ===================== 01 ЧТО ТАКОЕ onCTV ===================== -->
+  <!-- ===================== ПРЕИМУЩЕСТВА + КЛИЕНТЫ ===================== -->
+  <section class="section section--darker adv-section" id="advantages">
+    <div class="wrap">
+      <div class="adv-strip reveal-stagger">
+        <div class="adv-item"><span class="adv-num"><span data-count data-to="5" data-decimals="0">0</span><sup>+</sup></span><span class="adv-cap">лет работы с CTV</span></div>
+        <div class="adv-item"><span class="adv-num"><span data-count data-to="1000" data-decimals="0">0</span><sup>+</sup></span><span class="adv-cap">размещённых рекламных кампаний в CTV</span></div>
+        <div class="adv-item"><span class="adv-num"><span data-count data-to="45" data-decimals="0">0</span><sup>+</sup> млн</span><span class="adv-cap">Smart TV доступно на нашем инвентаре</span></div>
+        <div class="adv-item"><span class="adv-num"><span data-count data-to="700" data-decimals="0">0</span><sup>+</sup> млн</span><span class="adv-cap">показов в месяц — совокупный объём в приложениях и ОС</span></div>
+      </div>
+      <div class="trust reveal">
+        <h5>Нам доверяют</h5>
+        <div class="clients-marquee">
+          <ul class="clients-track">
+            <li>Ozon</li><li>МосБиржа (MOEX)</li><li>Tutu</li><li>Teva</li><li>Okkam Group</li>
+            <li aria-hidden="true">Ozon</li><li aria-hidden="true">МосБиржа (MOEX)</li><li aria-hidden="true">Tutu</li><li aria-hidden="true">Teva</li><li aria-hidden="true">Okkam Group</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 01 ПОЧЕМУ onCTV ===================== -->
   <section class="section section--dark" id="whatis">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">01</span><span class="divider"></span><span>Экосистема Smart TV</span></div>
-        <h2>Телевизор стал частью цифровой экосистемы</h2>
+        <div class="chapter-mark"><span class="num">01</span><span class="divider"></span><span>Преимущества</span></div>
+        <h2>Почему onCTV</h2>
         <p class="lead">Smart TV объединяет привычный телевизионный экран с интернетом, приложениями и персональным интерфейсом. Пользователь включает телевизор, выбирает приложение, ищет контент и смотрит видео уже внутри цифровой среды.</p>
       </div>
-      <p class="lead reveal" style="margin-bottom:clamp(36px,5vw,56px)">Поэтому CTV — это не только рекламный ролик внутри фильма или сериала. Это возможность обратиться к аудитории в момент включения устройства, выбора контента, запуска приложения или просмотра видео.</p>
 
+      <h3 class="why-sub reveal">Что вы получаете, работая с нами?</h3>
+      <div class="uc-grid uc-grid--3 reveal-stagger">
+        <div class="uc-card"><div class="uc-num">01</div><div><h4>Прямые контракты без посредников</h4><p>Работаем напрямую с вендорами Smart TV и паблишерами. Вы не платите наценку цепочки перепродавцов, поэтому CPM ниже.</p></div></div>
+        <div class="uc-card"><div class="uc-num">02</div><div><h4>Работа с OTT и на уровне производителей</h4><p>Главный экран телевизора и видео внутри приложений в одной кампании, с общим частотным контролем и единым отчётом.</p></div></div>
+        <div class="uc-card"><div class="uc-num">03</div><div><h4>Контроль качества размещений</h4><p>Подключаем независимых верификаторов и отсеиваем фрод. Показ засчитывается только на реальном телевизоре с реальным зрителем.</p></div></div>
+        <div class="uc-card"><div class="uc-num">04</div><div><h4>Измеримые результаты кампании</h4><p>Гибкий подход к оценке эффективности: от медийных показателей до сопоставления контактов Smart TV с визитами на сайт, установками приложений и ростом знания бренда.</p></div></div>
+        <div class="uc-card"><div class="uc-num">05</div><div><h4>Экспертиза в CTV</h4><p>Adspector имеет опыт запуска более 1 000 кампаний в Smart TV. Мы знаем, какой формат под какую задачу лучше использовать. Помогаем с адаптацией материалов под большой экран, а также с постановкой KPI и оценкой результатов РК.</p></div></div>
+        <div class="uc-card"><div class="uc-num">06</div><div><h4>Размещения в соответствии с ФЗ «О рекламе»</h4><p>Регистрируем креативы, получаем токены и передаём отчётность в ОРД. Вам не нужно разбираться с ЕРИР.</p></div></div>
+      </div>
+
+      <h3 class="why-sub reveal">CTV в цифрах</h3>
+      <p class="why-quote reveal">CTV растёт не только за счёт продажи новых телевизоров. Пользователи проводят больше времени внутри приложений, онлайн-кинотеатров и цифровых интерфейсов Smart TV.</p>
       <div class="stat-rail reveal-stagger">
         <div class="stat-card"><span class="num" data-count data-to="26.01" data-decimals="2" data-suffix=" млн">0 млн</span><span class="cap">человек — аудитория Smart TV в России</span></div>
         <div class="stat-card"><span class="num" data-count data-to="62.3" data-decimals="1" data-suffix="%">0%</span><span class="cap">домохозяйств в России имеют подключённый Smart TV</span></div>
         <div class="stat-card"><span class="num" data-count data-to="61" data-decimals="0" data-suffix="%">0%</span><span class="cap">еженедельный охват аудитории Smart TV</span></div>
       </div>
-      <p class="source-line">Источники: J’son &amp; Partners Consulting — <a href="https://adpass.ru/v-domohozyajstve-vse-prigoditsya-v-j-son-038-partners-obyasnili-stagnatsiyu-auditorii-smart-tv/" target="_blank" rel="noopener" style="text-decoration:underline">adpass.ru</a>; Okkam, опубликовано «Яндексом» — <a href="https://b2b.yandex.ru/adv/news/instrumenty-reklamy-dlya-smart-tv" target="_blank" rel="noopener" style="text-decoration:underline">b2b.yandex.ru</a></p>
+      <div class="stat-rail stat-rail--2 reveal-stagger">
+        <div class="stat-card"><span class="num">~10,5–15 млрд ₽</span><span class="cap">объём рынка CTV-рекламы в России в 2025 году. Разброс оценок зависит от того, какие сегменты включены в расчёт: ОС Smart TV, онлайн-ТВ, IPTV, видеохостинги, онлайн-кинотеатры, приложения телеканалов.</span></div>
+        <div class="stat-card"><span class="num">6,48 млн</span><span class="cap">Smart TV продано в 2025 году. Продажи новых устройств снизились, но парк достиг <b>60,6 млн</b> и продолжил расти за счёт накопленной базы.</span></div>
+      </div>
+      <p class="source-line">Источники: J’son &amp; Partners Consulting — <a href="https://adpass.ru/v-domohozyajstve-vse-prigoditsya-v-j-son-038-partners-obyasnili-stagnatsiyu-auditorii-smart-tv/" target="_blank" rel="noopener" style="text-decoration:underline">adpass.ru</a>, <a href="https://json.tv/analytic/rynok-smart-tv-v-rossii-itogi-2025-goda/" target="_blank" rel="noopener" style="text-decoration:underline">json.tv</a>; Okkam, опубликовано «Яндексом» — <a href="https://b2b.yandex.ru/adv/news/instrumenty-reklamy-dlya-smart-tv" target="_blank" rel="noopener" style="text-decoration:underline">b2b.yandex.ru</a>; Digital Marketing Club Russia</p>
     </div>
   </section>
+
 
   <!-- ===================== 01A ПОЛЬЗОВАТЕЛЬСКИЙ ПУТЬ ===================== -->
   <section class="section section--darker" id="cjm">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">01A</span><span class="divider"></span><span>Пользовательский путь</span></div>
+        <div class="chapter-mark"><span class="num">02</span><span class="divider"></span><span>Пользовательский путь</span></div>
         <h2>Где CTV встречается с пользователем на экране</h2>
         <p class="lead">Каждое включение Smart TV — это последовательность из нескольких моментов, и в каждом из них зритель может встретиться с рекламой.</p>
       </div>
@@ -784,111 +791,11 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
     </div>
   </section>
 
-  <!-- ===================== 02 РЫНОК ===================== -->
-  <section class="section section--dark" id="market">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">02</span><span class="divider"></span><span>Потребитель и рынок</span></div>
-        <h2>Роль и положение CTV на рынке</h2>
-        <p class="lead">Smart TV — уже не «второй экран»: выше вовлечённость, а большинство зрителей смотрят и линейное ТВ, и онлайн одновременно.</p>
-      </div>
-
-      <div class="growth-panel reveal">
-        <div class="growth-head">
-          <span class="growth-eyebrow">Парк устройств</span>
-          <h3>Smart TV продолжает расти двузначными темпами</h3>
-        </div>
-        <div class="growth-body">
-          <div class="growth-bars">
-            <div class="growth-bar-row">
-              <span class="growth-bar-year">2024</span>
-              <div class="growth-bar-track"><div class="growth-bar-fill growth-bar-fill--prev" style="--target:.896"></div></div>
-              <span class="growth-bar-num" data-count data-to="54.3" data-decimals="1" data-suffix=" млн">0 млн</span>
-            </div>
-            <div class="growth-bar-row">
-              <span class="growth-bar-year">2025</span>
-              <div class="growth-bar-track"><div class="growth-bar-fill growth-bar-fill--curr" style="--target:1"></div></div>
-              <span class="growth-bar-num" data-count data-to="60.6" data-decimals="1" data-suffix=" млн">0 млн</span>
-            </div>
-          </div>
-          <div class="growth-delta">
-            <span class="growth-delta-num" data-count data-to="11.6" data-decimals="1" data-prefix="+" data-suffix="%">+0%</span>
-            <span class="growth-delta-cap">рост парка устройств год к году — <b data-count data-to="6.3" data-decimals="1" data-prefix="+" data-suffix=" млн">+0 млн</b> новых Smart TV</span>
-          </div>
-        </div>
-        <p class="growth-source">Источник: J’son &amp; Partners Consulting, «Рынок Smart TV в России. Итоги 2025 года» — <a href="https://json.tv/analytic/rynok-smart-tv-v-rossii-itogi-2025-goda/" target="_blank" rel="noopener" style="text-decoration:underline">json.tv</a></p>
-      </div>
-
-      <div class="chart-grid reveal">
-        <div class="chart-panel">
-          <h3>Вовлечённость: Smart TV vs линейное ТВ</h3>
-          <div class="bars">
-            <div class="bar-group">
-              <div class="pair">
-                <div class="stick tv" style="height:47%"><span class="val">47</span></div>
-                <div class="stick ctv" style="height:53%"><span class="val">53</span></div>
-              </div>
-              <span class="cat">Не отвлекаются</span>
-            </div>
-            <div class="bar-group">
-              <div class="pair">
-                <div class="stick tv" style="height:45%"><span class="val">45</span></div>
-                <div class="stick ctv" style="height:36%"><span class="val">36</span></div>
-              </div>
-              <span class="cat">Другие дела параллельно</span>
-            </div>
-          </div>
-          <div class="legend"><span class="tv"><i></i>Линейное ТВ</span><span class="ctv"><i></i>Smart TV</span></div>
-          <p class="chart-note">59% зрителей называют «большой экран и высокое качество» главным преимуществом Smart TV.</p>
-        </div>
-        <div class="chart-panel">
-          <h3>Линейное ТВ и онлайн — единая медиасреда</h3>
-          <div class="donut-wrap">
-            <div class="donut"><span class="center">64%</span></div>
-            <ul class="donut-legend">
-              <li><i style="background:var(--navy)"></i><b>64%</b> смотрят и линейное ТВ, и онлайн</li>
-              <li><i style="background:var(--indigo)"></i><b>24%</b> смотрят только линейное ТВ</li>
-              <li><i style="background:var(--pink)"></i><b>13%</b> смотрят только онлайн</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <p class="source-line">Источник: J’son &amp; Partners Consulting, Mediascope (TV Index, Brand Pulse), АКАР / оценка рынка, Okkam Consumer Journey Study — независимые данные</p>
-    </div>
-  </section>
-
-  <!-- ===================== 03 ПОЧЕМУ onCTV ===================== -->
-  <section class="section section--darker" id="mix">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">03</span><span class="divider"></span><span>Почему onCTV</span></div>
-        <h2>CTV переходит из экспериментального канала в часть медиамикса</h2>
-      </div>
-
-      <div class="mix-grid reveal-stagger">
-        <div class="mix-card is-dark">
-          <span class="tag">объём CTV-рынка в России, 2025</span>
-          <div class="body">Российский рынок CTV растёт, но его объём зависит от методологии расчёта. По публичным оценкам Digital Marketing Club Russia, объём российского рынка CTV в 2025 году составлял около <b style="color:#fff">~10,5–15 млрд ₽</b>. Другие отраслевые оценки приводят значение до <b style="color:#fff">15,5 млрд ₽</b>.</div>
-          <div class="body">Разница связана с тем, какие сегменты включаются в расчёт: реклама в операционных системах Smart TV, онлайн-ТВ, IPTV, видеохостинги, онлайн-кинотеатры и приложения телеканалов.</div>
-        </div>
-        <div class="mix-card is-soft">
-          <span class="tag">ключевой акцент</span>
-          <div class="quote">CTV растёт не только за счёт продажи новых телевизоров. Пользователи проводят больше времени внутри приложений, онлайн-кинотеатров и цифровых интерфейсов Smart TV.</div>
-        </div>
-        <div class="mix-card is-soft">
-          <span class="tag">дополнительный рыночный факт</span>
-          <div class="body">В 2025 году в России было продано <b style="color:#fff">6,48 млн</b> Smart TV, а общий наличный парк устройств достиг <b style="color:#fff">60,6 млн</b>. Продажи новых устройств снизились, но парк продолжил расти за счёт накопленной базы.</div>
-          <div class="src">J’son &amp; Partners Consulting, «Рынок Smart TV в России. Итоги 2025 года» — <a href="https://json.tv/analytic/rynok-smart-tv-v-rossii-itogi-2025-goda/" target="_blank" rel="noopener" style="text-decoration:underline">json.tv</a></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ===================== 03A РОЛЬ CTV В МЕДИАМИКСЕ ===================== -->
   <section class="section section--dark" id="usecases">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">03A</span><span class="divider"></span><span>Роль CTV в медиамиксе</span></div>
+        <div class="chapter-mark"><span class="num">03</span><span class="divider"></span><span>Роль CTV в медиамиксе</span></div>
         <h2>Какие задачи решает CTV в медиамиксе</h2>
         <p class="lead">CTV позволяет сохранить преимущества большого экрана — заметность, звук и совместный просмотр — и добавить к ним цифровые инструменты: настройку аудитории, контроль частоты, выбор приложений и посткампейн-аналитику.</p>
       </div>
@@ -973,96 +880,113 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
     </div>
   </section>
 
-  <!-- ===================== 04A ВЫБОР ПРОДУКТА ===================== -->
+  <!-- ===================== 05 ЗАДАЧИ ПО ШАГАМ ЗРИТЕЛЯ ===================== -->
   <section class="section section--dark" id="fit">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">04A</span><span class="divider"></span><span>Выбор продукта</span></div>
-        <h2>Формат зависит от задачи</h2>
+        <div class="chapter-mark"><span class="num">05</span><span class="divider"></span><span>Выбор продукта</span></div>
+        <h2>Какую задачу решаем на каждом шаге зрителя</h2>
+        <p class="lead">Каждое включение телевизора проходит одни и те же этапы. Под каждый есть свой формат и свой способ оценить результат.</p>
       </div>
-      <div class="uc-grid reveal-stagger">
-        <div class="uc-card">
-          <div class="uc-num">01</div>
-          <div><h4>Если нужно привлечь внимание</h4><p>Выбираем интерфейсные размещения на уровне Smart TV: главный экран, меню или блок рекомендаций.</p></div>
+      <div class="journey reveal-stagger">
+        <div class="step">
+          <span class="step-moment"><b>1</b>Включение ТВ</span>
+          <h3>Привлечь внимание к бренду</h3>
+          <dl><div><dt>Формат</dt><dd>Home Hero на главном экране</dd></div><div><dt>Измеряем</dt><dd>Охват, частота, Brand Lift</dd></div></dl>
         </div>
-        <div class="uc-card">
-          <div class="uc-num">02</div>
-          <div><h4>Если нужно донести сообщение</h4><p>Используем видеорекламу внутри OTT-приложений до начала или во время просмотра контента.</p></div>
+        <div class="step">
+          <span class="step-moment"><b>2</b>Выбор контента</span>
+          <h3>Попасть в выбор пользователя</h3>
+          <dl><div><dt>Формат</dt><dd>Discovery, меню, рекомендации</dd></div><div><dt>Измеряем</dt><dd>Показы, клики, переходы</dd></div></dl>
         </div>
-        <div class="uc-card">
-          <div class="uc-num">03</div>
-          <div><h4>Если нужно привести пользователя в приложение</h4><p>Подключаем диплинк, QR-код или переход в приложение — если такая механика поддерживается конкретным вендором.</p></div>
+        <div class="step">
+          <span class="step-moment"><b>3</b>Просмотр видео</span>
+          <h3>Донести сообщение целиком</h3>
+          <dl><div><dt>Формат</dt><dd>Pre-Roll, Switch-Roll, Patch-Roll</dd></div><div><dt>Измеряем</dt><dd>Досмотры, Brand Lift, Traffic Lift</dd></div></dl>
         </div>
-        <div class="uc-card">
-          <div class="uc-num">04</div>
-          <div><h4>Если нужно протестировать перформанс</h4><p>Начинаем с тестового сплита, заранее определяем KPI и перераспределяем объёмы в пользу наиболее эффективных источников.</p></div>
+        <div class="step">
+          <span class="step-moment"><b>4</b>После показа</span>
+          <h3>Привести на сайт или в приложение</h3>
+          <dl><div><dt>Механика</dt><dd>Диплинк, QR-код, переход в приложение — если поддерживается конкретным вендором</dd></div><div><dt>Измеряем</dt><dd>Визиты, установки, cross-device</dd></div></dl>
+        </div>
+      </div>
+      <div class="perf reveal">
+        <b>Хотите сначала проверить?</b>
+        <p>Запускаем тестовый сплит по вендорам и приложениям, заранее фиксируем KPI и переносим бюджет в самые эффективные источники.</p>
+        <a class="btn btn-primary" href="#contact">Обсудить тест <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== 06 ЗАМЕР И КАЧЕСТВО ===================== -->
+  <section class="section section--darker" id="verification">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="chapter-mark"><span class="num">06</span><span class="divider"></span><span>Замер и качество трафика</span></div>
+        <h2>Показываем, что реклама сработала и что её увидели люди</h2>
+        <p class="lead">От базовой отчётности до исследований эффекта. Уровень замера выбираем до старта, вместе с KPI.</p>
+      </div>
+      <div class="measure reveal">
+        <div class="mlist">
+          <div class="mrow"><h4>Базовая отчётность<small>в каждой кампании</small></h4><p>Показы, охват, частота, клики или переходы, гео, устройства, ОС и приложения — в зависимости от доступности данных.</p></div>
+          <div class="mrow"><h4>Brand Lift<small>знание и отношение</small></h4><p>Кастомные CAWI-опросы: как изменились знание бренда, отношение к нему и намерение купить.</p></div>
+          <div class="mrow"><h4>Traffic Lift<small>дополнительный трафик</small></h4><p>Сравниваем тестовую и контрольную группы через кросс-девайс сопоставление по Wi-Fi и считаем прирост визитов.<em>Объём панели и условия уточняются под кампанию.</em></p></div>
+          <div class="mrow"><h4>App Attribution<small>установки и события</small></h4><p>Атрибуция через Adjust, AppsFlyer и другие трекеры.<em>Работает, если выбранный источник и формат поддерживают нужные трекинговые механики.</em></p></div>
+          <div class="mrow"><h4>Cross-device<small>ТВ → телефон → сайт</small></h4><p>Связываем показ на телевизоре с действиями на других устройствах того же домохозяйства.<em>Сопоставление вероятностное, без прямой идентификации человека.</em></p></div>
+        </div>
+        <div class="quality">
+          <p class="eyebrow"><svg class="mark-dot" style="color:var(--pink)"><use href="#onctv-mark"/></svg>Качество трафика</p>
+          <h3>Платите за реальные показы на реальных телевизорах</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".18"/><path d="M7.5 12.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Независимая верификация.</b> Показы проверяют сторонние верификаторы, а не только мы сами.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".18"/><path d="M7.5 12.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Антифрод.</b> Отсекаем ботов, эмуляторы и подозрительные устройства.</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".18"/><path d="M7.5 12.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Прозрачность.</b> В отчёте видно, у какого вендора и в каком приложении прошёл каждый показ.</span></li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== 05 ВЕРИФИКАЦИЯ ===================== -->
-  <section class="section section--darker" id="verification">
+  <!-- ===================== 07 КЕЙС ===================== -->
+  <section class="section section--dark" id="case">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">05</span><span class="divider"></span><span>Верификация и замер</span></div>
-        <h2>От показа к результату</h2>
-        <p class="lead">CTV можно измерять на разных уровнях — от доставки рекламного сообщения до отложенных визитов, установок и изменения знания о бренде.</p>
+        <div class="chapter-mark"><span class="num">07</span><span class="divider"></span><span>Кейс</span></div>
+        <h2>Tutu.ru: как CTV приводит людей на сайт</h2>
+        <p class="lead">За 38 дней кампания на Smart TV дала 19 млн показов. Модель атрибуции сопоставила с ними сотни тысяч визитов на сайт, в том числе отложенных.</p>
       </div>
-
-      <div class="verify-grid reveal-stagger">
-        <div class="verify-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7l8-4 8 4-8 4-8-4zM4 12l8 4 8-4M4 17l8 4 8-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/></svg></div>
-          <h4>Базовая отчётность</h4>
-          <p>Показы, охват, частота, клики или переходы, география, устройство, операционная система и приложение — в зависимости от доступности данных.</p>
+      <div class="case-grid">
+        <div class="case-nums reveal-stagger">
+          <div class="cn"><b>19<small>млн</small></b><span>показов CTV за 38 дней</span></div>
+          <div class="cn"><b>800<small>тыс.</small></b><span>отложенных визитов на сайт, сопоставленных с показами</span></div>
+          <div class="cn"><b>450<small>тыс.</small></b><span>уникальных визитов</span></div>
+          <div class="cn"><b>&gt;50<small>%</small></b><span>визитов пришли в первые 4 дня после показа</span></div>
         </div>
-        <div class="verify-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H9l-4 4v-4H4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/></svg></div>
-          <h4>Brand Lift</h4>
-          <p>Опросное исследование, которое показывает изменение знания бренда, отношения к нему или намерения совершить действие.</p>
-          <p>Кастомные CAWI-опросы. Позволяет измерить изменение знания бренда, отношения к нему и намерения совершить покупку.</p>
-        </div>
-        <div class="verify-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9c4.5-4 11.5-4 16 0M7 12.5c2.7-2.4 6.6-2.4 9.3 0M10 16c1.1-1 2.9-1 4 0" stroke-linecap="round" stroke-width="1.6"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg></div>
-          <h4>Traffic Lift</h4>
-          <p>Сравнение поведения тестовой и контрольной групп для оценки дополнительного трафика после рекламного контакта.</p>
-          <p>Через кросс-девайс-сопоставление по Wi-Fi: сравниваем тест и контроль, оцениваем дополнительный трафик после CTV-контакта. Объём панели и условия уточняются под кампанию.</p>
-        </div>
-        <div class="verify-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><rect x="7" y="3" width="10" height="18" rx="2" stroke-width="1.6"/><path d="M11 18h2" stroke-linecap="round" stroke-width="1.6"/></svg></div>
-          <h4>App Attribution</h4>
-          <p>Атрибуция установок и событий в мобильном приложении через Adjust, AppsFlyer или другую поддерживаемую систему.</p>
-          <p>Работает при условии, что выбранный источник и формат поддерживают необходимые трекинговые механики.</p>
-        </div>
-        <div class="verify-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="7" cy="12" r="3.4" stroke-width="1.6"/><rect x="14" y="5" width="7" height="14" rx="1.6" stroke-width="1.6"/><path d="M10.3 12h1.7" stroke-linecap="round" stroke-width="1.6"/></svg></div>
-          <h4>Cross-device</h4>
-          <p>Сопоставление рекламного контакта на Smart TV с действиями на другом устройстве.</p>
-          <p>Обычно речь идёт о вероятностном сопоставлении устройств или домохозяйства, а не о прямой идентификации человека.</p>
+        <div class="case-story reveal">
+          <div class="case-who">Tutu.ru <span>Трэвел</span></div>
+          <p><b>Задача.</b> Проверить, приводит ли реклама на телевизоре пользователей на сайт, и измерить этот эффект, а не просто охват.</p>
+          <p><b>Решение.</b> Размещение на Smart TV и кросс-девайс атрибуция. Модель сопоставила показы на телевизоре с последующими визитами на сайт, включая отложенные.</p>
+          <div class="cum">
+            <div class="cum-lbl">Какая доля атрибутированных визитов пришла к моменту после показа</div>
+            <div class="cum-bars">
+              <div class="cum-col"><b>~30%</b><i style="--h:30%"></i></div>
+              <div class="cum-col"><b>&gt;50%</b><i style="--h:52%"></i></div>
+              <div class="cum-col"><b>100%</b><i style="--h:100%"></i></div>
+            </div>
+            <div class="cum-axis"><span>за 24 часа</span><span>за 4 дня</span><span>за 38 дней</span></div>
+          </div>
+          <p class="case-src">Источник: Adspector × Tutu.ru, материалы кейса onCTV</p>
         </div>
       </div>
-
-      <div class="case-panel reveal">
-        <h3>Как CTV работает после показа</h3>
-        <p class="funnel-note" style="margin-top:0; margin-bottom:1.4em">В кампании Adspector × Tutu.ru за 38 дней было доставлено 19 млн CTV-показов. По данным использованной модели атрибуции, с рекламными контактами были сопоставлены визиты на сайт, включая отложенные визиты после показа.</p>
-        <div class="funnel">
-          <div class="funnel-step"><div class="n">19 млн</div><div class="d">показов CTV</div></div>
-          <div class="funnel-arrow"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8h18M14 2l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="funnel-step"><div class="n">800 тыс.</div><div class="d">сопоставленных отложенных визитов на сайт</div></div>
-          <div class="funnel-arrow"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8h18M14 2l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="funnel-step"><div class="n">450 тыс.</div><div class="d">уникальных визитов</div></div>
-        </div>
-        <p class="funnel-note">Около 30% атрибутированных визитов пришлись на первые 24 часа, более 50% — на первые четыре дня после контакта.</p>
-      </div>
-      <p class="source-line">Источник: Adspector × Tutu.ru, материалы кейса onCTV</p>
     </div>
   </section>
 
   <!-- ===================== 05 КАНАЛЫ ===================== -->
-  <section class="section section--dark" id="channels">
+  <section class="section section--darker" id="channels">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">06</span><span class="divider"></span><span>Модели сочетания каналов</span></div>
+        <div class="chapter-mark"><span class="num">08</span><span class="divider"></span><span>Модели сочетания каналов</span></div>
         <h2>CTV в сочетании с другими каналами</h2>
         <p class="lead">CTV можно подключить на любом этапе воронки.</p>
       </div>
@@ -1095,36 +1019,25 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
     </div>
   </section>
 
-  <!-- ===================== 06 ВЫГОДА ===================== -->
-  <section class="section section--darker" id="benefit">
+  <!-- ===================== 09 ВЫГОДА ===================== -->
+  <section class="section section--dark" id="benefit">
     <div class="wrap">
       <div class="section-head reveal">
-        <div class="chapter-mark"><span class="num">07</span><span class="divider"></span><span>Коммерческая выгода</span></div>
+        <div class="chapter-mark"><span class="num">09</span><span class="divider"></span><span>Коммерческая выгода</span></div>
         <h2>Коммерческая выгода для заказчика</h2>
       </div>
 
-      <div class="benefit-layout reveal">
-        <div>
-          <div class="benefit-cpm">Оптимизация CPM</div>
-          <p class="benefit-cpm-tag">Adspector работает с CTV более 5 лет и имеет прямые договоры с паблишерами и вендорами Smart TV — это позволяет предоставлять выгодные условия размещения без посредников.</p>
-          <ul class="benefit-list">
-            <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Более 1 000 проведённых рекламных кампаний в onCTV</li>
-            <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Регулируемый частотный кап (onCTV Apps)</li>
-            <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Продвинутая отчётность: показы → визиты → уникальные визиты, с разбивкой по гео и конверсии</li>
-          </ul>
-        </div>
-        <div class="clients-panel">
-          <h5>Нам доверяют</h5>
-          <div class="clients-marquee">
-            <ul class="clients-track">
-              <li>Ozon</li><li>МосБиржа (MOEX)</li><li>Tutu</li><li>Teva</li><li>Okkam Group</li>
-              <li aria-hidden="true">Ozon</li><li aria-hidden="true">МосБиржа (MOEX)</li><li aria-hidden="true">Tutu</li><li aria-hidden="true">Teva</li><li aria-hidden="true">Okkam Group</li>
-            </ul>
-          </div>
-        </div>
+      <div class="reveal">
+        <div class="benefit-cpm">Оптимизация CPM</div>
+        <p class="benefit-cpm-tag">Прямые договоры с паблишерами и вендорами Smart TV позволяют предоставлять выгодные условия размещения без посредников.</p>
+        <ul class="benefit-list">
+          <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Регулируемый частотный кап (onCTV Apps)</li>
+          <li><svg class="b-mark"><use href="#onctv-mark"/></svg>Продвинутая отчётность: показы → визиты → уникальные визиты, с разбивкой по гео и конверсии</li>
+        </ul>
       </div>
     </div>
   </section>
+
 
   <!-- ===================== CONTACT ===================== -->
   <section class="section contact-section" id="contact">
@@ -1133,29 +1046,28 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
       <div class="c2"></div>
     </div>
     <div class="wrap">
-      <p class="eyebrow"><svg class="mark-dot" style="color:var(--pink)"><use href="#onctv-mark"/></svg>Контакты</p>
-      <h2>Подберём onCTV под задачу кампании</h2>
-      <p class="lead">Расскажите, что нужно решить: достроить охват ТВ, повысить заметность бренда, привести пользователей в приложение или измерить отложенный эффект. Мы предложим подходящие форматы, вендоров, настройки таргетинга и схему оценки результата.</p>
-      <div class="contact-actions">
-        <a class="btn btn-primary" href="#contact" data-open-contact>Получить предложение <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <a class="btn btn-ghost" href="#formats">Скачать медиакит (PDF)</a>
+      <div class="contact-grid">
+        <div class="reveal">
+          <h2>Три простых шага для запуска кампании в onCTV</h2>
+          <ol class="steps3">
+            <li><div><h4>Бриф</h4><p>Расскажите о задаче на РК — охват и построение знания, трафик или установки. Укажите бюджет и сроки предоставления расчёта.</p></div></li>
+            <li><div><h4>Получите расчёт</h4><p>Сформируем медиаплан с релевантными форматами и таргетингами, а также предложим релевантную схему оценки кампании. Предложение направим в течение рабочего дня.</p></div></li>
+            <li><div><h4>Запуск размещения</h4><p>Маркировка и техническая настройка размещения на стороне Adspector. Отчётность предоставляем как по итогам РК, так и на протяжении всей кампании.</p></div></li>
+          </ol>
+        </div>
+        <div class="contact-card reveal">
+          <h2>Подберём форматы в onCTV под ваши задачи</h2>
+          <p class="lead">Напишите нам, чтобы узнать подробности и подготовить предложение</p>
+          <div class="mail"><code id="mail">accounts@adspector.ru</code><button class="btn btn-primary" id="copy" type="button">Скопировать</button></div>
+          <!-- TODO: подставить ссылку на PDF-медиакит (href + download), когда файл будет готов -->
+          <a class="btn btn-ghost" id="mediakit" href="#contact">Скачать медиакит (PDF)</a>
+        </div>
       </div>
-      <p class="contact-note">Отправим медиакит и предварительные условия в течение рабочего дня.</p>
     </div>
   </section>
 
 </main>
 
-<div class="contact-modal" id="contactModal" aria-hidden="true">
-  <div class="contact-modal-backdrop" data-close-contact></div>
-  <div class="contact-modal-card" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
-    <button class="contact-modal-close" data-close-contact aria-label="Закрыть">×</button>
-    <p class="eyebrow"><svg class="mark-dot" style="color:var(--pink)"><use href="#onctv-mark"/></svg>Контакты</p>
-    <h3 id="contactModalTitle">Отдел клиентского сервиса Adspector</h3>
-    <a class="contact-modal-email" href="mailto:accounts@adspector.ru">accounts@adspector.ru</a>
-    <p class="contact-modal-note">Ответим в течение рабочего дня.</p>
-  </div>
-</div>
 
 <div class="tv-overlay" id="tvOverlay" aria-hidden="true">
   <div class="tv-overlay-backdrop" data-close-tv></div>
@@ -1179,17 +1091,16 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
         <span>onCTV by Adspector</span>
       </a>
       <nav class="footer-nav">
-        <a href="#whatis">Экосистема</a>
-        <a href="#market">Рынок</a>
-        <a href="#mix">Почему onCTV</a>
+        <a href="#whatis">Почему onCTV</a>
         <a href="#formats">Возможности</a>
         <a href="#verification">Измеримость</a>
+        <a href="#case">Кейс</a>
         <a href="#channels">CTV в медиасплите</a>
         <a href="#benefit">Ценовые преимущества</a>
         <a href="#contact">Контакты</a>
       </nav>
     </div>
-    <p class="footer-copy">© 2026 onCTV by Adspector. Черновик для обсуждения. Цифры и кейсы — данные onCTV (onctv.ru) и независимые источники: Mediascope, АКАР, АРИР, Okkam Group, AdIndex/ADPASS — см. подписи к разделам.</p>
+    <p class="footer-copy">© 2026 onCTV by Adspector. Данные onCTV и независимые источники: J’son &amp; Partners Consulting, Mediascope, АКАР, Okkam Group.</p>
   </div>
 </footer>
 
@@ -1244,33 +1155,20 @@ footer{ background:var(--navy-deepest); padding:48px 0 34px; }
     countTargets.forEach(function(t){ animateCount(t); });
   }
 
-  var contactModal = document.getElementById('contactModal');
-  var contactCloseBtn = contactModal.querySelector('.contact-modal-close');
-  var contactOpener = null;
+  var copyBtn = document.getElementById('copy');
+  if(copyBtn){
+    copyBtn.addEventListener('click', function(){
+      var mailEl = document.getElementById('mail');
+      function done(){ copyBtn.textContent = 'Скопировано'; setTimeout(function(){ copyBtn.textContent = 'Скопировать'; }, 1800); }
+      function select(){
+        var r = document.createRange(); r.selectNodeContents(mailEl);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        copyBtn.textContent = 'Выделено, нажмите ⌘C';
+      }
+      try{ navigator.clipboard.writeText(mailEl.textContent).then(done, select); }catch(e){ select(); }
+    });
+  }
 
-  function openContact(e){
-    if(e) e.preventDefault();
-    contactOpener = document.activeElement;
-    contactModal.classList.add('open');
-    contactModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    contactCloseBtn.focus();
-  }
-  function closeContact(){
-    contactModal.classList.remove('open');
-    contactModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if(contactOpener && typeof contactOpener.focus === 'function'){ contactOpener.focus(); }
-  }
-  document.querySelectorAll('[data-open-contact]').forEach(function(el){
-    el.addEventListener('click', openContact);
-  });
-  contactModal.querySelectorAll('[data-close-contact]').forEach(function(el){
-    el.addEventListener('click', closeContact);
-  });
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && contactModal.classList.contains('open')){ closeContact(); }
-  });
 
   var FORMATS = {
     vendors: {
